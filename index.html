@@ -1,17 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>DaTools</title>
-        <link rel="stylesheet" href="Style.css">
+        <link rel="stylesheet" href="Style%20index.css" />
     </head>
     <body>
-        <a>Bruhhhhh Test hmmm</a>
-        <button onclick="showfact()">Wut is dissss</button>
-        <p id="fact"></p>
-        <button class="Button1" onclick="window.location.href='PDF%20convertor.html'">
-  PDF Convertor
-</button>
+        <!-- Header Bar -->
+        <header class="headbar">
+            <span class="brand-title">DaTools</span>
+            <!-- Dark Mode Toggle Button -->
+            <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+                <span id="theme-icon">🌙</span> <span id="theme-text">Dark Mode</span>
+            </button>
+        </header>
+
+        <!-- Main Content Container -->
+        <main class="container">
+            <section class="card">
+                <h1>Welcome to DaTools</h1>
+                <p class="subtitle">Choose a tool or discover something new below.</p>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="showfact()">Wut is dissss?</button>
+                    <button class="btn btn-primary" onclick="window.location.href='PDF%20convertor.html'">
+                        PDF Converter
+                    </button>
+                </div>
+
+                <p id="fact" class="fact-display"></p>
+            </section>
+        </main>
 
         <script src="1.js"></script>
     </body>
