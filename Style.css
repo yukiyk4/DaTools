@@ -482,3 +482,23 @@ body.has-wallpaper #card-container label,
 body.has-wallpaper .result-row {
     color: #cbd5e1 !important;
 }
+
+/* ==========================================
+   Global Invisible Scrollbars (Fixed)
+   ========================================== */
+html.no-scrollbars,
+body.no-scrollbars,
+html.no-scrollbars *,
+body.no-scrollbars * {
+    scrollbar-width: none !important;     /* Firefox */
+    -ms-overflow-style: none !important;  /* IE and Edge */
+}
+
+html.no-scrollbars::-webkit-scrollbar,
+body.no-scrollbars::-webkit-scrollbar,
+html.no-scrollbars *::-webkit-scrollbar,
+body.no-scrollbars *::-webkit-scrollbar {
+    display: none !important;             /* Chrome, Safari, Opera */
+    width: 0 !important;
+    height: 0 !important;
+}

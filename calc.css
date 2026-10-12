@@ -1,0 +1,142 @@
+/* ==========================================
+   DaCalc Pro Specific Styles
+   ========================================== */
+
+.calc-main {
+    flex: 1;
+    display: flex;
+    padding: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    min-height: 0;
+}
+
+.calc-wrapper {
+    display: flex;
+    flex: 1;
+    gap: 1.5rem;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+}
+
+.calc-sidebar {
+    width: 240px;
+    background-color: rgba(0, 0, 0, 0.02);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+body.dark-mode .calc-sidebar {
+    background-color: rgba(255, 255, 255, 0.01);
+}
+
+.calc-nav-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    space-x: 0.75rem;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-color);
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.calc-nav-btn:hover {
+    background-color: rgba(20, 184, 166, 0.1);
+    color: #0d9488;
+}
+
+.calc-nav-btn.active {
+    background-color: #0d9488;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+}
+
+.calc-content-area {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.calc-panel-header {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.calc-card {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1.25rem;
+}
+
+.calc-input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    font-size: 0.875rem;
+    transition: border-color 0.2s ease;
+}
+
+.calc-input:focus {
+    outline: none;
+    border-color: #0d9488;
+}
+
+.calc-primary-btn {
+    width: 100%;
+    padding: 0.65rem;
+    background-color: #0d9488;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: 0.75rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    box-shadow: 0 4px 10px rgba(13, 148, 136, 0.25);
+}
+
+.calc-primary-btn:hover {
+    background-color: #0f766e;
+}
+
+/* Glassmorphism Wallpaper Overrides for Calc */
+body.has-wallpaper .calc-wrapper {
+    background-color: rgba(15, 23, 42, calc(var(--card-alpha) + 0.05)) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+body.has-wallpaper .calc-card {
+    background-color: rgba(15, 23, 42, calc(var(--card-alpha) + 0.1)) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.has-wallpaper .calc-sidebar {
+    background-color: rgba(15, 23, 42, calc(var(--card-alpha)) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+@media (max-width: 768px) {
+    .calc-wrapper {
+        flex-direction: column;
+    }
+    .calc-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+}

@@ -233,3 +233,47 @@ document.addEventListener("DOMContentLoaded", () => {
         calculateTax();
     }
 });
+
+(function initGlobalScrollbarToggle() {
+    const SCROLLBAR_KEY = "datools_hide_scrollbars";
+
+    function applyScrollbarState(shouldHide) {
+        if (shouldHide) {
+            document.documentElement.classList.add("no-scrollbars");
+            document.body.classList.add("no-scrollbars");
+        } else {
+            document.documentElement.classList.remove("no-scrollbars");
+            document.body.classList.remove("no-scrollbars");
+        }
+
+        const scrollbarBtn = document.getElementById("toggle-scrollbar-btn");
+        if (scrollbarBtn) {
+            if (shouldHide) {
+                scrollbarBtn.textContent = "Enabled";
+                scrollbarBtn.classList.add("bg-teal-600", "text-white", "border-teal-600");
+                scrollbarBtn.classList.remove("bg-transparent");
+            } else {
+                scrollbarBtn.textContent = "Disabled";
+                scrollbarBtn.classList.remove("bg-teal-600", "text-white", "border-teal-600");
+            }
+        }
+    }
+
+    const isSavedHidden = localStorage.getItem(SCROLLBAR_KEY) === "true";
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => applyScrollbarState(isSavedHidden));
+    } else {
+        applyScrollbarState(isSavedHidden);
+    }
+
+    document.addEventListener("click", (e) => {
+        if (e.target && e.target.id === "toggle-scrollbar-btn") {
+            const currentlyHidden = document.documentElement.classList.contains("no-scrollbars");
+            const newNextState = !currentlyHidden;
+
+            localStorage.setItem(SCROLLBAR_KEY, newNextState.toString());
+            applyScrollbarState(newNextState);
+        }
+    });
+})();

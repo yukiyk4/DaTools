@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="en" class="h-full">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DaCalc Pro - DaTools</title>
+        <!-- Tailwind CSS CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- FontAwesome Icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <!-- Google Fonts Inter -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+            rel="stylesheet" />
+        <!-- Universal Styles & Dedicated Calc Styles -->
+        <link rel="stylesheet" href="Style.css" />
+        <link rel="stylesheet" href="calc.css" />
+    </head>
+    <body class="h-full flex flex-col justify-between selection:bg-teal-500 selection:text-white">
+        <!-- Header Bar -->
+        <header>
+            <div class="header-container">
+                <div class="header-left">
+                    <a href="index.html" class="button2" title="Back to Homepage">
+                        <i class="fa-solid fa-house"></i>
+                    </a>
+                    <div class="header-logo-box bg-gradient-to-br from-teal-600 to-emerald-600">
+                        <i class="fa-solid fa-calculator text-xl text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="header-title">DaCalc Pro</h1>
+                        <p class="header-subtitle">Accounting, Coding & Financial calculation suite</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+                        <span id="theme-icon">🌙</span> <span id="theme-text">Dark Mode</span>
+                    </button>
+                    <button id="settings-btn" class="button2" aria-label="Open Settings" title="Settings">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Workspace with Sidebar Layout -->
+        <main class="calc-main">
+            <div class="calc-wrapper">
+                <!-- Mode Sidebar -->
+                <aside class="calc-sidebar">
+                    <div class="p-4 border-b border-slate-200 dark:border-slate-800">
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Calculator Modes</p>
+                    </div>
+                    <nav class="p-3 space-y-1.5 flex-1">
+                        <button class="calc-nav-btn active" data-target="accounting-panel">
+                            <i class="fa-solid fa-book-open"></i>
+                            <span>Accounting Calc</span>
+                        </button>
+                        <button class="calc-nav-btn" data-target="coding-panel">
+                            <i class="fa-solid fa-code"></i>
+                            <span>Coding Calc</span>
+                        </button>
+                        <button class="calc-nav-btn" data-target="financial-panel">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>Financial Calc</span>
+                        </button>
+                    </nav>
+                </aside>
+
+                <!-- Calculator Panels Container -->
+                <section class="calc-content-area">
+                    <!-- 1. ACCOUNTING CALCULATOR PANEL -->
+                    <div id="accounting-panel" class="calc-panel">
+                        <div class="calc-panel-header">
+                            <h2 class="text-lg font-bold">Accounting & Business Calculator</h2>
+                            <p class="text-xs text-slate-400">
+                                Compute markup, gross profit margins, break-even points, and depreciation.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Markup & Margin Tool -->
+                            <div class="calc-card">
+                                <h3 class="font-semibold text-sm mb-3 text-teal-600">
+                                    <i class="fa-solid fa-percent mr-1.5"></i> Markup & Margin Analyzer
+                                </h3>
+                                <div class="space-y-3 text-xs">
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Cost Price (RM)</label>
+                                        <input type="number" id="acc-cost" placeholder="e.g., 100" class="calc-input" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Selling Price (RM)</label>
+                                        <input
+                                            type="number"
+                                            id="acc-price"
+                                            placeholder="e.g., 150"
+                                            class="calc-input" />
+                                    </div>
+                                    <button id="calc-margin-btn" class="calc-primary-btn">Calculate Margin</button>
+                                    <div
+                                        id="acc-margin-result"
+                                        class="hidden mt-3 p-3 bg-teal-500/10 rounded-xl space-y-1 font-medium">
+                                        <p>
+                                            Gross Profit:
+                                            <span id="res-profit" class="font-bold text-teal-600">RM 0.00</span>
+                                        </p>
+                                        <p>
+                                            Profit Margin:
+                                            <span id="res-margin" class="font-bold text-teal-600">0%</span>
+                                        </p>
+                                        <p>
+                                            Markup Percentage:
+                                            <span id="res-markup" class="font-bold text-teal-600">0%</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Break-Even Analysis Tool -->
+                            <div class="calc-card">
+                                <h3 class="font-semibold text-sm mb-3 text-teal-600">
+                                    <i class="fa-solid fa-scale-balanced mr-1.5"></i> Break-Even Point
+                                </h3>
+                                <div class="space-y-3 text-xs">
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Fixed Costs (RM)</label>
+                                        <input
+                                            type="number"
+                                            id="acc-fixed"
+                                            placeholder="e.g., 5000"
+                                            class="calc-input" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1"
+                                            >Variable Cost per Unit (RM)</label
+                                        >
+                                        <input type="number" id="acc-var" placeholder="e.g., 20" class="calc-input" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1"
+                                            >Selling Price per Unit (RM)</label
+                                        >
+                                        <input
+                                            type="number"
+                                            id="acc-unit-price"
+                                            placeholder="e.g., 50"
+                                            class="calc-input" />
+                                    </div>
+                                    <button id="calc-breakeven-btn" class="calc-primary-btn">Calculate Units</button>
+                                    <div
+                                        id="acc-breakeven-result"
+                                        class="hidden mt-3 p-3 bg-teal-500/10 rounded-xl space-y-1 font-medium">
+                                        <p>
+                                            Break-Even Units:
+                                            <span id="res-units" class="font-bold text-teal-600">0 units</span>
+                                        </p>
+                                        <p>
+                                            Break-Even Revenue:
+                                            <span id="res-revenue" class="font-bold text-teal-600">RM 0.00</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Loan Amortization Schedule Tool (Accounting Tab) -->
+                            <div class="calc-card md:col-span-2 mt-6">
+                                <h3 class="font-semibold text-sm mb-3 text-teal-600">
+                                    <i class="fa-solid fa-table-list mr-1.5"></i> Loan Amortization Schedule & Interest
+                                    Breakdown
+                                </h3>
+                                <p class="text-xs text-slate-400 mb-4">
+                                    Calculate monthly loan repayments (EMI), total interest costs, and generate a
+                                    complete month-by-month repayment schedule.
+                                </p>
+
+                                <div class="space-y-4 text-xs">
+                                    <!-- Amortization Inputs -->
+                                    <div
+                                        class="grid grid-cols-1 sm:grid-cols-12 gap-3 bg-slate-100 dark:bg-slate-900/50 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 items-end">
+                                        <div class="sm:col-span-4">
+                                            <label class="block font-medium text-slate-500 mb-1"
+                                                >Loan Amount (Principal - RM)</label
+                                            >
+                                            <input
+                                                type="number"
+                                                id="amort-principal"
+                                                placeholder="e.g., 50000"
+                                                class="calc-input" />
+                                        </div>
+                                        <div class="sm:col-span-3">
+                                            <label class="block font-medium text-slate-500 mb-1"
+                                                >Annual Interest Rate (%)</label
+                                            >
+                                            <input
+                                                type="number"
+                                                step="0.01"
+                                                id="amort-rate"
+                                                placeholder="e.g., 4.5"
+                                                class="calc-input" />
+                                        </div>
+                                        <div class="sm:col-span-3">
+                                            <label class="block font-medium text-slate-500 mb-1"
+                                                >Loan Tenure (Years)</label
+                                            >
+                                            <input
+                                                type="number"
+                                                id="amort-years"
+                                                placeholder="e.g., 5"
+                                                class="calc-input" />
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <button id="calc-amort-btn" class="calc-primary-btn w-full py-2.5">
+                                                <i class="fa-solid fa-calculator mr-1"></i> Calculate
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Summary Cards Output -->
+                                    <div
+                                        id="amort-summary-box"
+                                        class="hidden grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                                        <div class="p-3 bg-teal-500/10 rounded-xl border border-teal-500/20">
+                                            <p class="text-slate-500 font-medium">Monthly EMI Payment</p>
+                                            <p id="res-amort-emi" class="text-base font-bold text-teal-600 mt-0.5">
+                                                RM 0.00
+                                            </p>
+                                        </div>
+                                        <div class="p-3 bg-amber-500/10 rounded-xl border border-amber-500/20">
+                                            <p class="text-slate-500 font-medium">Total Interest Payable</p>
+                                            <p
+                                                id="res-amort-interest"
+                                                class="text-base font-bold text-amber-600 mt-0.5">
+                                                RM 0.00
+                                            </p>
+                                        </div>
+                                        <div class="p-3 bg-indigo-500/10 rounded-xl border border-indigo-500/20">
+                                            <p class="text-slate-500 font-medium">Total Amount Payable</p>
+                                            <p id="res-amort-total" class="text-base font-bold text-indigo-600 mt-0.5">
+                                                RM 0.00
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Schedule Table -->
+                                    <div
+                                        id="amort-table-box"
+                                        class="hidden border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+                                        <div class="max-h-80 overflow-y-auto">
+                                            <table class="w-full text-left border-collapse">
+                                                <thead
+                                                    class="sticky top-0 bg-slate-100 dark:bg-slate-900 text-slate-500 font-semibold border-b border-slate-200 dark:border-slate-800">
+                                                    <tr>
+                                                        <th class="p-2.5 text-center">Month</th>
+                                                        <th class="p-2.5 text-right">Payment (RM)</th>
+                                                        <th class="p-2.5 text-right">Principal (RM)</th>
+                                                        <th class="p-2.5 text-right">Interest (RM)</th>
+                                                        <th class="p-2.5 text-right">Remaining Balance (RM)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="amort-table-body">
+                                                    <!-- Dynamic rows populated via JS -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <!-- Export PDF Schedule Button -->
+                                    <div id="amort-actions" class="hidden flex justify-end pt-2">
+                                        <button
+                                            id="export-amort-pdf-btn"
+                                            class="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl transition-all shadow-md shadow-teal-500/20 flex items-center">
+                                            <i class="fa-solid fa-file-pdf mr-2"></i> Export Amortization Schedule PDF
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Inside #accounting-panel in calc.html -->
+                            <div class="calc-card md:col-span-2">
+                                <h3 class="font-semibold text-sm mb-3 text-teal-600">
+                                    <i class="fa-solid fa-file-invoice mr-1.5"></i> Journal Entries & Financial
+                                    Statement PDF Generator
+                                </h3>
+                                <p class="text-xs text-slate-400 mb-4">
+                                    Record your journal entries below, tag their account types, and export formal
+                                    multi-section financial statements.
+                                </p>
+
+                                <div class="space-y-4 text-xs">
+                                    <!-- Entry Input Form with Account Type Selector -->
+                                    <div
+                                        class="grid grid-cols-1 sm:grid-cols-12 gap-2 bg-slate-100 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-800 items-end">
+                                        <div class="sm:col-span-4">
+                                            <label class="block font-medium text-slate-500 mb-1"
+                                                >Account Title / Description</label
+                                            >
+                                            <input
+                                                type="text"
+                                                id="je-desc"
+                                                placeholder="e.g., Sales Revenue / Rent Expense"
+                                                class="calc-input" />
+                                        </div>
+                                        <div class="sm:col-span-3">
+                                            <label class="block font-medium text-slate-500 mb-1">Account Type</label>
+                                            <select id="je-type" class="calc-input font-semibold">
+                                                <option value="Asset">Asset</option>
+                                                <option value="Liability">Liability</option>
+                                                <option value="Equity">Equity / Capital</option>
+                                                <option value="Revenue" selected>Revenue / Income</option>
+                                                <option value="Expense">Expense</option>
+                                            </select>
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <label class="block font-medium text-slate-500 mb-1">Debit (RM)</label>
+                                            <input
+                                                type="number"
+                                                id="je-debit"
+                                                step="0.01"
+                                                placeholder="0.00"
+                                                class="calc-input" />
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <label class="block font-medium text-slate-500 mb-1">Credit (RM)</label>
+                                            <input
+                                                type="number"
+                                                id="je-credit"
+                                                step="0.01"
+                                                placeholder="0.00"
+                                                class="calc-input" />
+                                        </div>
+                                        <div class="sm:col-span-12 mt-1">
+                                            <button id="add-je-btn" class="calc-primary-btn w-full py-2.5">
+                                                <i class="fa-solid fa-plus mr-1"></i> Add Entry to Financials
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Journal Entries Table -->
+                                    <div
+                                        class="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+                                        <table class="w-full text-left border-collapse">
+                                            <thead>
+                                                <tr
+                                                    class="bg-slate-100 dark:bg-slate-900 text-slate-500 font-semibold border-b border-slate-200 dark:border-slate-800">
+                                                    <th class="p-2.5">Account Description</th>
+                                                    <th class="p-2.5">Type</th>
+                                                    <th class="p-2.5 text-right">Debit (RM)</th>
+                                                    <th class="p-2.5 text-right">Credit (RM)</th>
+                                                    <th class="p-2.5 text-center w-16">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="je-table-body">
+                                                <tr id="je-empty-row">
+                                                    <td colspan="5" class="text-center py-6 text-slate-400">
+                                                        No entries added yet. Add accounts above to generate your
+                                                        Financial Statements.
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr
+                                                    class="bg-slate-50 dark:bg-slate-900/40 font-bold border-t border-slate-200 dark:border-slate-800">
+                                                    <td colspan="2" class="p-2.5">Trial Balance Total:</td>
+                                                    <td id="total-debit" class="p-2.5 text-right">RM 0.00</td>
+                                                    <td id="total-credit" class="p-2.5 text-right">RM 0.00</td>
+                                                    <td></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+
+                                    <!-- Balance Status & Export Button -->
+                                    <div class="flex flex-wra p items-center justify-between gap-3 pt-2">
+                                        <div
+                                            id="balance-status"
+                                            class="font-semibold px-3 py-1.5 rounded-lg bg-red-500/10 text-red-600 border border-red-500/20">
+                                            <i class="fa-solid fa-triangle-exclamation mr-1"></i> Trial Balance
+                                            Unbalanced
+                                        </div>
+                                        <button
+                                            id="export-statement-pdf-btn"
+                                            disabled
+                                            class="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 disabled:bg-slate-300 dark:disabled:bg-slate-800 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all shadow-md shadow-teal-500/20 flex items-center">
+                                            <i class="fa-solid fa-file-pdf mr-2"></i> Export Complete Financial
+                                            Statements PDF
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. CODING CALCULATOR PANEL -->
+                    <div id="coding-panel" class="calc-panel hidden">
+                        <div class="calc-panel-header">
+                            <h2 class="text-lg font-bold">Coding & Developer Calculator</h2>
+                            <p class="text-xs text-slate-400">
+                                Number base conversion, pixel-to-rem calculation, and data size converter.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Number Base Converter -->
+                            <div class="calc-card">
+                                <h3 class="font-semibold text-sm mb-3 text-teal-600">
+                                    <i class="fa-solid fa-binary mr-1.5"></i> Number Base Converter
+                                </h3>
+                                <div class="space-y-3 text-xs">
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Input Value</label>
+                                        <input
+                                            type="text"
+                                            id="code-base-input"
+                                            placeholder="e.g., 255"
+                                            class="calc-input font-mono" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Input Base</label>
+                                        <select id="code-base-type" class="calc-input font-semibold">
+                                            <option value="10" selected>Decimal (Base 10)</option>
+                                            <option value="16">Hexadecimal (Base 16)</option>
+                                            <option value="2">Binary (Base 2)</option>
+                                            <option value="8">Octal (Base 8)</option>
+                                        </select>
+                                    </div>
+                                    <button id="calc-base-btn" class="calc-primary-btn">Convert Bases</button>
+                                    <div
+                                        id="code-base-result"
+                                        class="hidden mt-3 p-3 bg-teal-500/10 rounded-xl space-y-1 font-mono text-xs">
+                                        <p>Decimal: <span id="res-dec" class="font-bold">0</span></p>
+                                        <p>Hex: <span id="res-hex" class="font-bold">0</span></p>
+                                        <p>Binary: <span id="res-bin" class="font-bold">0</span></p>
+                                        <p>Octal: <span id="res-oct" class="font-bold">0</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PX to REM / Storage Size Converter -->
+                            <div class="calc-card">
+                                <h3 class="font-semibold text-sm mb-3 text-teal-600">
+                                    <i class="fa-solid fa-desktop mr-1.5"></i> CSS Pixels to REM Converter
+                                </h3>
+                                <div class="space-y-3 text-xs">
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Pixel Value (px)</label>
+                                        <input
+                                            type="number"
+                                            id="code-px"
+                                            placeholder="e.g., 16"
+                                            value="16"
+                                            class="calc-input" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Root Font Size (px)</label>
+                                        <input
+                                            type="number"
+                                            id="code-root"
+                                            placeholder="e.g., 16"
+                                            value="16"
+                                            class="calc-input" />
+                                    </div>
+                                    <button id="calc-rem-btn" class="calc-primary-btn">Calculate REM</button>
+                                    <div
+                                        id="code-rem-result"
+                                        class="hidden mt-3 p-3 bg-teal-500/10 rounded-xl space-y-1 font-medium">
+                                        <p>
+                                            REM Output: <span id="res-rem" class="font-bold text-teal-600">1rem</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. FINANCIAL CALCULATOR PANEL -->
+                    <div id="financial-panel" class="calc-panel hidden">
+                        <div class="calc-panel-header">
+                            <h2 class="text-lg font-bold">Financial & Loan Calculator</h2>
+                            <p class="text-xs text-slate-400">
+                                Calculate compound interest and monthly loan EMI amortization.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Compound Interest Tool -->
+                            <div class="calc-card">
+                                <h3 class="font-semibold text-sm mb-3 text-teal-600">
+                                    <i class="fa-solid fa-piggy-bank mr-1.5"></i> Compound Interest Calculator
+                                </h3>
+                                <div class="space-y-3 text-xs">
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1"
+                                            >Principal Amount (RM)</label
+                                        >
+                                        <input
+                                            type="number"
+                                            id="fin-principal"
+                                            placeholder="e.g., 10000"
+                                            class="calc-input" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1"
+                                            >Annual Interest Rate (%)</label
+                                        >
+                                        <input
+                                            type="number"
+                                            step="0.1"
+                                            id="fin-rate"
+                                            placeholder="e.g., 5.5"
+                                            class="calc-input" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Time Period (Years)</label>
+                                        <input type="number" id="fin-years" placeholder="e.g., 5" class="calc-input" />
+                                    </div>
+                                    <button id="calc-compound-btn" class="calc-primary-btn">Calculate Growth</button>
+                                    <div
+                                        id="fin-compound-result"
+                                        class="hidden mt-3 p-3 bg-teal-500/10 rounded-xl space-y-1 font-medium">
+                                        <p>
+                                            Total Future Value:
+                                            <span id="res-future" class="font-bold text-teal-600">RM 0.00</span>
+                                        </p>
+                                        <p>
+                                            Interest Earned:
+                                            <span id="res-interest" class="font-bold text-teal-600">RM 0.00</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Loan EMI Calculator -->
+                            <div class="calc-card">
+                                <h3 class="font-semibold text-sm mb-3 text-teal-600">
+                                    <i class="fa-solid fa-file-invoice-dollar mr-1.5"></i> Loan EMI Calculator
+                                </h3>
+                                <div class="space-y-3 text-xs">
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Loan Amount (RM)</label>
+                                        <input
+                                            type="number"
+                                            id="loan-amount"
+                                            placeholder="e.g., 50000"
+                                            class="calc-input" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Interest Rate (%)</label>
+                                        <input
+                                            type="number"
+                                            step="0.1"
+                                            id="loan-rate"
+                                            placeholder="e.g., 4.5"
+                                            class="calc-input" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Loan Tenure (Years)</label>
+                                        <input type="number" id="loan-years" placeholder="e.g., 9" class="calc-input" />
+                                    </div>
+                                    <button id="calc-loan-btn" class="calc-primary-btn">Calculate Monthly EMI</button>
+                                    <div
+                                        id="loan-result"
+                                        class="hidden mt-3 p-3 bg-teal-500/10 rounded-xl space-y-1 font-medium">
+                                        <p>
+                                            Monthly Payment (EMI):
+                                            <span id="res-emi" class="font-bold text-teal-600">RM 0.00</span>
+                                        </p>
+                                        <p>
+                                            Total Payment:
+                                            <span id="res-total-loan" class="font-bold text-teal-600">RM 0.00</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Settings Modal Overlay -->
+        <div id="settings-modal" class="modal-overlay hidden">
+            <div class="modal-card">
+                <div
+                    class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200 dark:border-slate-700">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-gear text-teal-600"></i>
+                        <h3 class="font-bold text-lg">Hub Settings</h3>
+                    </div>
+                    <button id="close-modal" class="button2" title="Close Settings">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="space-y-4 text-sm">
+                    <div class="flex items-center justify-between py-2">
+                        <div>
+                            <p class="font-semibold">Quick Theme Toggle</p>
+                            <p class="text-xs text-slate-500">Switch between light and dark mode preferences.</p>
+                        </div>
+                        <button id="modal-theme-btn" class="theme-toggle-btn">Toggle Mode</button>
+                    </div>
+                    <div class="py-2 border-t border-slate-100 dark:border-slate-800 space-y-3">
+                        <div>
+                            <p class="font-semibold">Custom Background / Wallpaper</p>
+                            <p class="text-xs text-slate-500">
+                                Use a custom image link or upload a picture from your device.
+                            </p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Image URL</label>
+                            <div class="flex gap-2">
+                                <input
+                                    type="url"
+                                    id="bg-url-input"
+                                    placeholder="https://example.com/image.jpg"
+                                    class="tax-input text-xs py-1.5" />
+                                <button
+                                    id="apply-url-btn"
+                                    class="px-3 py-1.5 text-xs font-semibold bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors">
+                                    Apply
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Upload Local Image</label>
+                            <input
+                                type="file"
+                                id="bg-file-input"
+                                accept="image/*"
+                                class="text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-teal-500/10 file:text-teal-600 hover:file:bg-teal-500/20 cursor-pointer" />
+                        </div>
+                        <div class="py-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
+                            <div class="flex justify-between items-center">
+                                <p class="font-semibold">Card Transparency</p>
+                                <span id="transparency-value" class="text-xs font-bold text-teal-600">65%</span>
+                            </div>
+                            <input
+                                type="range"
+                                id="transparency-slider"
+                                min="0.1"
+                                max="1"
+                                step="0.05"
+                                value="0.65"
+                                class="w-full accent-teal-600 cursor-pointer" />
+                        </div>
+                        <div class="pt-1">
+                            <button
+                                id="reset-bg-btn"
+                                class="w-full py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                                <i class="fa-solid fa-rotate-left mr-1"></i> Reset to Default Color
+                            </button>
+                            <!-- Settings Modal Option Row -->
+                            <div
+                                class="flex items-center justify-between py-2 border-t border-slate-100 dark:border-slate-800">
+                                <div>
+                                    <p class="font-semibold text-slate-800 dark:text-slate-200">Hide Scrollbars</p>
+                                    <p class="text-xs text-slate-500">
+                                        Hide visual scrollbars across all tools while keeping scrolling active.
+                                    </p>
+                                </div>
+                                <button
+                                    id="toggle-scrollbar-btn"
+                                    class="theme-toggle-btn text-xs px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 font-semibold transition-all">
+                                    Disabled
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Bro this shit is free</p>
+        </footer>
+
+        <!-- Universal App Logic + Dedicated Calc Script -->
+        <script src="app.js"></script>
+        <script src="calc.js"></script>
+    </body>
+</html>

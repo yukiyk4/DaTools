@@ -1,242 +1,288 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="h-full">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DaTax Pro - Advanced Financial Calculator</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Link to Universal CSS File -->
-    <link rel="stylesheet" href="Style.css">
-</head>
-<body class="h-full flex flex-col justify-between selection:bg-blue-500 selection:text-white">
-
-    <!-- Header Bar -->
-    <header>
-        <div class="header-container">
-            <div class="header-left">
-                <button class="button2" onclick="window.location.href='index.html'" title="Back to Homepage">
-                    <i class="fa-solid fa-house"></i>
-                </button>
-                <div class="header-logo-box bg-gradient-to-br from-emerald-600 to-teal-600">
-                    <i class="fa-solid fa-calculator text-xl text-white"></i>
-                </div>
-                <div>
-                    <h1 class="header-title">DaTax Pro</h1>
-                    <p class="header-subtitle">Advanced Tax, Fee & Bill Split Calculator</p>
-                </div>
-            </div>
-
-            <div class="flex items-center space-x-3">
-                <!-- Dark Mode Toggle Button -->
-                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
-                    <span id="theme-icon">🌙</span> <span id="theme-text">Dark Mode</span>
-                </button>
-
-                <!-- Settings Gear Button -->
-                <button id="settings-btn" class="button2" aria-label="Open Settings" title="Settings">
-                    <i class="fa-solid fa-gear"></i>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="tax-main">
-        <div id="card-container" class="tax-card">
-
-            <div class="tax-header-text">
-                <h2 id="main-title" class="tax-heading">Invoice & Bill Breakdown</h2>
-                <p id="main-desc" class="tax-desc">Configure quantities, service charges, shipping, and split bills seamlessly.</p>
-            </div>
-
-            <!-- Calculator Inputs Form -->
-            <div class="tax-form-group">
-
-                <!-- Row 1: Unit Price & Quantity -->
-                <div class="tax-grid">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DaTax Pro - Advanced Financial Calculator</title>
+        <!-- Tailwind CSS CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- FontAwesome Icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <!-- Google Fonts Inter -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet" />
+        <!-- Link to Universal CSS File -->
+        <link rel="stylesheet" href="Style.css" />
+    </head>
+    <body class="h-full flex flex-col justify-between selection:bg-blue-500 selection:text-white">
+        <!-- Header Bar -->
+        <header>
+            <div class="header-container">
+                <div class="header-left">
+                    <button class="button2" onclick="window.location.href='index.html'" title="Back to Homepage">
+                        <i class="fa-solid fa-house"></i>
+                    </button>
+                    <div class="header-logo-box bg-gradient-to-br from-emerald-600 to-teal-600">
+                        <i class="fa-solid fa-calculator text-xl text-white"></i>
+                    </div>
                     <div>
-                        <label class="tax-label">Unit Price ($ / RM)</label>
-                        <div class="input-wrapper">
-                            <span class="currency-symbol">$</span>
-                            <input type="number" id="amountInput" placeholder="0.00" class="tax-input pl-8">
+                        <h1 class="header-title">DaTax Pro</h1>
+                        <p class="header-subtitle">Advanced Tax, Fee & Bill Split Calculator</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <!-- Dark Mode Toggle Button -->
+                    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+                        <span id="theme-icon">🌙</span> <span id="theme-text">Dark Mode</span>
+                    </button>
+
+                    <!-- Settings Gear Button -->
+                    <button id="settings-btn" class="button2" aria-label="Open Settings" title="Settings">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="tax-main">
+            <div id="card-container" class="tax-card">
+                <div class="tax-header-text">
+                    <h2 id="main-title" class="tax-heading">Invoice & Bill Breakdown</h2>
+                    <p id="main-desc" class="tax-desc">
+                        Configure quantities, service charges, shipping, and split bills seamlessly.
+                    </p>
+                </div>
+
+                <!-- Calculator Inputs Form -->
+                <div class="tax-form-group">
+                    <!-- Row 1: Unit Price & Quantity -->
+                    <div class="tax-grid">
+                        <div>
+                            <label class="tax-label">Unit Price ($ / RM)</label>
+                            <div class="input-wrapper">
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="amountInput" placeholder="0.00" class="tax-input pl-8" />
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <label class="tax-label">Quantity (Qty)</label>
-                        <input type="number" id="qtyInput" placeholder="1" value="1" min="1" class="tax-input">
-                    </div>
-                </div>
-
-                <!-- Row 2: Discount & Service Charge -->
-                <div class="tax-grid">
-                    <div>
-                        <label class="tax-label">Discount (%)</label>
-                        <input type="number" id="discountInput" placeholder="0" value="0" class="tax-input">
-                    </div>
-                    <div>
-                        <label class="tax-label">Service Charge / Gratuity (%)</label>
-                        <input type="number" id="serviceInput" placeholder="0" value="0" class="tax-input">
-                    </div>
-                </div>
-
-                <!-- Row 3: Tax Rate & Shipping Fee -->
-                <div class="tax-grid">
-                    <div>
-                        <label class="tax-label">Tax / SST Rate (%)</label>
-                        <input type="number" id="taxInput" placeholder="6" value="6" class="tax-input">
-                    </div>
-                    <div>
-                        <label class="tax-label">Shipping / Handling Fee ($)</label>
-                        <input type="number" id="shippingInput" placeholder="0.00" value="0" class="tax-input">
-                    </div>
-                </div>
-
-                <!-- Row 4: Toggle & Split Bill -->
-                <div class="tax-grid items-center pt-2">
-                    <div class="flex items-center space-x-3">
-                        <input type="checkbox" id="taxInclusiveToggle" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
-                        <label for="taxInclusiveToggle" class="tax-label cursor-pointer mb-0">Tax-Inclusive Pricing</label>
-                    </div>
-                    <div>
-                        <label class="tax-label">Split Bill (Number of People)</label>
-                        <input type="number" id="splitInput" placeholder="1" value="1" min="1" class="tax-input">
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Calculation Results Breakdown Card -->
-            <div id="preview-box-inner" class="tax-results-box">
-                <div class="result-row">
-                    <span>Base Subtotal (Price × Qty):</span>
-                    <span id="baseSubtotalDisplay" class="result-value-dark">$0.00</span>
-                </div>
-                <div class="result-row">
-                    <span>Discount Saved:</span>
-                    <span id="discountDisplay" class="result-value-green">-$0.00</span>
-                </div>
-                <div class="result-row">
-                    <span>Service Charge:</span>
-                    <span id="serviceDisplay" class="result-value-dark">+$0.00</span>
-                </div>
-                <div class="result-row">
-                    <span>Tax Amount:</span>
-                    <span id="taxAmountDisplay" class="result-value-blue">+$0.00</span>
-                </div>
-                <div class="result-row">
-                    <span>Shipping Fee:</span>
-                    <span id="shippingDisplay" class="result-value-dark">+$0.00</span>
-                </div>
-
-                <!-- Grand Total -->
-                <div class="result-total-row">
-                    <span class="grand-total-label">Grand Total:</span>
-                    <span id="grandTotalDisplay" class="grand-total-value">$0.00</span>
-                </div>
-
-                <!-- Per Person Split Total -->
-                <div id="splitRow" class="result-row pt-2 border-t border-slate-200 hidden">
-                    <span class="font-bold text-emerald-600">Amount Per Person (<span id="splitCountDisplay">1</span> people):</span>
-                    <span id="perPersonDisplay" class="font-extrabold text-emerald-600 text-lg">$0.00</span>
-                </div>
-            </div>
-
-            <!-- Clear Button -->
-            <div class="reset-wrapper">
-                <button id="resetBtn" class="reset-btn">
-                    <i class="fa-solid fa-rotate-right mr-1"></i> Reset All Fields
-                </button>
-            </div>
-
-        </div>
-    </main>
-
-    <!-- Settings Popup Modal Overlay -->
-    <div id="settings-modal" class="modal-overlay hidden">
-        <div class="modal-card">
-            <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200 dark:border-slate-700">
-                <div class="flex items-center space-x-2">
-                    <i class="fa-solid fa-gear text-blue-600"></i>
-                    <h3 class="font-bold text-lg">Suite Settings</h3>
-                </div>
-                <button id="close-modal" class="button2" title="Close Settings">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <div class="space-y-4 text-sm">
-                <!-- Theme Mode -->
-                <div class="flex items-center justify-between py-2">
-                    <div>
-                        <p class="font-semibold">Quick Theme Toggle</p>
-                        <p class="text-xs text-slate-500">Switch between light and dark mode preferences.</p>
-                    </div>
-                    <button id="modal-theme-btn" class="theme-toggle-btn">Toggle Mode</button>
-                </div>
-
-                <!-- Custom Wallpaper Section -->
-                <div class="py-2 border-t border-slate-100 dark:border-slate-800 space-y-3">
-                    <div>
-                        <p class="font-semibold">Custom Background / Wallpaper</p>
-                        <p class="text-xs text-slate-500">Use a custom image link or upload a picture.</p>
-                    </div>
-
-                    <!-- Image URL -->
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Image URL</label>
-                        <div class="flex gap-2">
-                            <input type="url" id="bg-url-input" placeholder="https://example.com/image.jpg" class="tax-input text-xs py-1.5">
-                            <button id="apply-url-btn" class="px-3 py-1.5 text-xs font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Apply</button>
+                        <div>
+                            <label class="tax-label">Quantity (Qty)</label>
+                            <input type="number" id="qtyInput" placeholder="1" value="1" min="1" class="tax-input" />
                         </div>
                     </div>
 
-                    <!-- Upload File -->
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1">Upload Local Image</label>
-                        <input type="file" id="bg-file-input" accept="image/*" class="text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-500/10 file:text-blue-600 hover:file:bg-blue-500/20 cursor-pointer">
+                    <!-- Row 2: Discount & Service Charge -->
+                    <div class="tax-grid">
+                        <div>
+                            <label class="tax-label">Discount (%)</label>
+                            <input type="number" id="discountInput" placeholder="0" value="0" class="tax-input" />
+                        </div>
+                        <div>
+                            <label class="tax-label">Service Charge / Gratuity (%)</label>
+                            <input type="number" id="serviceInput" placeholder="0" value="0" class="tax-input" />
+                        </div>
                     </div>
 
-                    <!-- Reset Wallpaper -->
-                    <div class="pt-1">
-                        <button id="reset-bg-btn" class="w-full py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-                            <i class="fa-solid fa-rotate-left mr-1"></i> Reset to Default Color
+                    <!-- Row 3: Tax Rate & Shipping Fee -->
+                    <div class="tax-grid">
+                        <div>
+                            <label class="tax-label">Tax / SST Rate (%)</label>
+                            <input type="number" id="taxInput" placeholder="6" value="6" class="tax-input" />
+                        </div>
+                        <div>
+                            <label class="tax-label">Shipping / Handling Fee ($)</label>
+                            <input type="number" id="shippingInput" placeholder="0.00" value="0" class="tax-input" />
+                        </div>
+                    </div>
+
+                    <!-- Row 4: Toggle & Split Bill -->
+                    <div class="tax-grid items-center pt-2">
+                        <div class="flex items-center space-x-3">
+                            <input
+                                type="checkbox"
+                                id="taxInclusiveToggle"
+                                class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer" />
+                            <label for="taxInclusiveToggle" class="tax-label cursor-pointer mb-0"
+                                >Tax-Inclusive Pricing</label
+                            >
+                        </div>
+                        <div>
+                            <label class="tax-label">Split Bill (Number of People)</label>
+                            <input type="number" id="splitInput" placeholder="1" value="1" min="1" class="tax-input" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calculation Results Breakdown Card -->
+                <div id="preview-box-inner" class="tax-results-box">
+                    <div class="result-row">
+                        <span>Base Subtotal (Price × Qty):</span>
+                        <span id="baseSubtotalDisplay" class="result-value-dark">$0.00</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Discount Saved:</span>
+                        <span id="discountDisplay" class="result-value-green">-$0.00</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Service Charge:</span>
+                        <span id="serviceDisplay" class="result-value-dark">+$0.00</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Tax Amount:</span>
+                        <span id="taxAmountDisplay" class="result-value-blue">+$0.00</span>
+                    </div>
+                    <div class="result-row">
+                        <span>Shipping Fee:</span>
+                        <span id="shippingDisplay" class="result-value-dark">+$0.00</span>
+                    </div>
+
+                    <!-- Grand Total -->
+                    <div class="result-total-row">
+                        <span class="grand-total-label">Grand Total:</span>
+                        <span id="grandTotalDisplay" class="grand-total-value">$0.00</span>
+                    </div>
+
+                    <!-- Per Person Split Total -->
+                    <div id="splitRow" class="result-row pt-2 border-t border-slate-200 hidden">
+                        <span class="font-bold text-emerald-600"
+                            >Amount Per Person (<span id="splitCountDisplay">1</span> people):</span
+                        >
+                        <span id="perPersonDisplay" class="font-extrabold text-emerald-600 text-lg">$0.00</span>
+                    </div>
+                </div>
+
+                <!-- Clear Button -->
+                <div class="reset-wrapper">
+                    <button id="resetBtn" class="reset-btn">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Reset All Fields
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Settings Popup Modal Overlay -->
+        <div id="settings-modal" class="modal-overlay hidden">
+            <div class="modal-card">
+                <div
+                    class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200 dark:border-slate-700">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-gear text-blue-600"></i>
+                        <h3 class="font-bold text-lg">Suite Settings</h3>
+                    </div>
+                    <button id="close-modal" class="button2" title="Close Settings">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-4 text-sm">
+                    <!-- Theme Mode -->
+                    <div class="flex items-center justify-between py-2">
+                        <div>
+                            <p class="font-semibold">Quick Theme Toggle</p>
+                            <p class="text-xs text-slate-500">Switch between light and dark mode preferences.</p>
+                        </div>
+                        <button id="modal-theme-btn" class="theme-toggle-btn">Toggle Mode</button>
+                    </div>
+
+                    <!-- Custom Wallpaper Section -->
+                    <div class="py-2 border-t border-slate-100 dark:border-slate-800 space-y-3">
+                        <div>
+                            <p class="font-semibold">Custom Background / Wallpaper</p>
+                            <p class="text-xs text-slate-500">Use a custom image link or upload a picture.</p>
+                        </div>
+
+                        <!-- Image URL -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Image URL</label>
+                            <div class="flex gap-2">
+                                <input
+                                    type="url"
+                                    id="bg-url-input"
+                                    placeholder="https://example.com/image.jpg"
+                                    class="tax-input text-xs py-1.5" />
+                                <button
+                                    id="apply-url-btn"
+                                    class="px-3 py-1.5 text-xs font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                    Apply
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Upload File -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Upload Local Image</label>
+                            <input
+                                type="file"
+                                id="bg-file-input"
+                                accept="image/*"
+                                class="text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-500/10 file:text-blue-600 hover:file:bg-blue-500/20 cursor-pointer" />
+                        </div>
+
+                        <!-- Reset Wallpaper -->
+                        <div class="pt-1">
+                            <button
+                                id="reset-bg-btn"
+                                class="w-full py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                                <i class="fa-solid fa-rotate-left mr-1"></i> Reset to Default Color
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Transparency Slider -->
+                    <div class="py-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <p class="font-semibold">Card Transparency</p>
+                            <span id="transparency-value" class="text-xs font-bold text-blue-600">65%</span>
+                        </div>
+                        <p class="text-xs text-slate-500">Adjust opacity of cards on wallpapers.</p>
+                        <input
+                            type="range"
+                            id="transparency-slider"
+                            min="0.1"
+                            max="1"
+                            step="0.05"
+                            value="0.65"
+                            class="w-full accent-blue-600 cursor-pointer" />
+                    </div>
+
+                    <!-- Local Storage Data -->
+                    <div class="flex items-center justify-between py-2 border-t border-slate-100 dark:border-slate-800">
+                        <div>
+                            <p class="font-semibold">Local Storage Data</p>
+                            <p class="text-xs text-slate-500">Clear saved preferences.</p>
+                        </div>
+                        <button
+                            id="clear-cache-btn"
+                            class="px-3 py-1.5 text-xs font-semibold bg-red-500/10 text-red-600 hover:bg-red-500 hover:text-white rounded-lg transition-colors">
+                            Clear Cache
+                        </button>
+                    </div>
+                    <!-- Settings Modal Option Row -->
+                    <div class="flex items-center justify-between py-2 border-t border-slate-100 dark:border-slate-800">
+                        <div>
+                            <p class="font-semibold text-slate-800 dark:text-slate-200">Hide Scrollbars</p>
+                            <p class="text-xs text-slate-500">
+                                Hide visual scrollbars across all tools while keeping scrolling active.
+                            </p>
+                        </div>
+                        <button
+                            id="toggle-scrollbar-btn"
+                            class="theme-toggle-btn text-xs px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 font-semibold transition-all">
+                            Disabled
                         </button>
                     </div>
                 </div>
-
-                <!-- Transparency Slider -->
-                <div class="py-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
-                    <div class="flex justify-between items-center">
-                        <p class="font-semibold">Card Transparency</p>
-                        <span id="transparency-value" class="text-xs font-bold text-blue-600">65%</span>
-                    </div>
-                    <p class="text-xs text-slate-500">Adjust opacity of cards on wallpapers.</p>
-                    <input type="range" id="transparency-slider" min="0.1" max="1" step="0.05" value="0.65" class="w-full accent-blue-600 cursor-pointer">
-                </div>
-
-                <!-- Local Storage Data -->
-                <div class="flex items-center justify-between py-2 border-t border-slate-100 dark:border-slate-800">
-                    <div>
-                        <p class="font-semibold">Local Storage Data</p>
-                        <p class="text-xs text-slate-500">Clear saved preferences.</p>
-                    </div>
-                    <button id="clear-cache-btn" class="px-3 py-1.5 text-xs font-semibold bg-red-500/10 text-red-600 hover:bg-red-500 hover:text-white rounded-lg transition-colors">Clear Cache</button>
-                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>Bro this shit is free</p>
-    </footer>
+        <!-- Footer -->
+        <footer>
+            <p>Bro this shit is free</p>
+        </footer>
 
-    <!-- Universal Script (handles theme, wallpaper, settings, and tax calculations) -->
-    <script src="app.js"></script>
-</body>
+        <!-- Universal Script (handles theme, wallpaper, settings, and tax calculations) -->
+        <script src="app.js"></script>
+    </body>
 </html>
