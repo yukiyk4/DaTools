@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DaTax Pro - Advanced Financial Calculator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Link to your shared CSS file -->
+    <link rel="stylesheet" href="Tax.css">
+</head>
+<body class="h-full flex flex-col justify-between">
+
+    <!-- Header Bar -->
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <button class="button2" onclick="window.location.href='index.html'" title="Back to Homepage">
+                    <i class="fa-solid fa-house"></i>
+                </button>
+                <div class="header-logo-box">
+                    <i class="fa-solid fa-calculator text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="header-title">DaTax Pro</h1>
+                    <p class="header-subtitle">Advanced Tax, Fee & Bill Split Calculator</p>
+                </div>
+            </div>
+
+            <div>
+                <!-- Dark Mode Toggle Button -->
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+                    <span id="theme-icon">🌙</span> <span id="theme-text">Dark Mode</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="tax-main">
+        <div id="card-container" class="tax-card">
+
+            <div class="tax-header-text">
+                <h2 id="main-title" class="tax-heading">Invoice & Bill Breakdown</h2>
+                <p id="main-desc" class="tax-desc">Configure quantities, service charges, shipping, and split bills seamlessly.</p>
+            </div>
+
+            <!-- Calculator Inputs Form -->
+            <div class="tax-form-group">
+
+                <!-- Row 1: Unit Price & Quantity -->
+                <div class="tax-grid">
+                    <div>
+                        <label class="tax-label">Unit Price ($ / RM)</label>
+                        <div class="input-wrapper">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="amountInput" placeholder="0.00" class="tax-input pl-8">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="tax-label">Quantity (Qty)</label>
+                        <input type="number" id="qtyInput" placeholder="1" value="1" min="1" class="tax-input">
+                    </div>
+                </div>
+
+                <!-- Row 2: Discount & Service Charge -->
+                <div class="tax-grid">
+                    <div>
+                        <label class="tax-label">Discount (%)</label>
+                        <input type="number" id="discountInput" placeholder="0" value="0" class="tax-input">
+                    </div>
+                    <div>
+                        <label class="tax-label">Service Charge / Gratuity (%)</label>
+                        <input type="number" id="serviceInput" placeholder="0" value="0" class="tax-input">
+                    </div>
+                </div>
+
+                <!-- Row 3: Tax Rate & Shipping Fee -->
+                <div class="tax-grid">
+                    <div>
+                        <label class="tax-label">Tax / SST Rate (%)</label>
+                        <input type="number" id="taxInput" placeholder="6" value="6" class="tax-input">
+                    </div>
+                    <div>
+                        <label class="tax-label">Shipping / Handling Fee ($)</label>
+                        <input type="number" id="shippingInput" placeholder="0.00" value="0" class="tax-input">
+                    </div>
+                </div>
+
+                <!-- Row 4: Toggle & Split Bill -->
+                <div class="tax-grid items-center pt-2">
+                    <div class="flex items-center space-x-3">
+                        <input type="checkbox" id="taxInclusiveToggle" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
+                        <label for="taxInclusiveToggle" class="tax-label cursor-pointer mb-0">Tax-Inclusive Pricing (Amount already includes tax)</label>
+                    </div>
+                    <div>
+                        <label class="tax-label">Split Bill (Number of People)</label>
+                        <input type="number" id="splitInput" placeholder="1" value="1" min="1" class="tax-input">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Calculation Results Breakdown Card -->
+            <div id="preview-box-inner" class="tax-results-box">
+                <div class="result-row">
+                    <span>Base Subtotal (Price $\times$ Qty):</span>
+                    <span id="baseSubtotalDisplay" class="result-value-dark">$0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>Discount Saved:</span>
+                    <span id="discountDisplay" class="result-value-green">-$0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>Service Charge:</span>
+                    <span id="serviceDisplay" class="result-value-dark">+$0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>Tax Amount:</span>
+                    <span id="taxAmountDisplay" class="result-value-blue">+$0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>Shipping Fee:</span>
+                    <span id="shippingDisplay" class="result-value-dark">+$0.00</span>
+                </div>
+
+                <!-- Grand Total -->
+                <div class="result-total-row">
+                    <span class="grand-total-label">Grand Total:</span>
+                    <span id="grandTotalDisplay" class="grand-total-value">$0.00</span>
+                </div>
+
+                <!-- Per Person Split Total (Shows if split > 1) -->
+                <div id="splitRow" class="result-row pt-2 border-t border-slate-200 hidden">
+                    <span class="font-bold text-emerald-600">Amount Per Person (<span id="splitCountDisplay">1</span> people):</span>
+                    <span id="perPersonDisplay" class="font-extrabold text-emerald-600 text-lg">$0.00</span>
+                </div>
+            </div>
+
+            <!-- Clear Button -->
+            <div class="reset-wrapper">
+                <button id="resetBtn" class="reset-btn">
+                    <i class="fa-solid fa-rotate-right mr-1"></i> Reset All Fields
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Bro this shit is free</p>
+    </footer>
+
+    <!-- JavaScript File -->
+    <script src="Tax.js"></script>
+</body>
+</html>

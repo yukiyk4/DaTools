@@ -1,0 +1,267 @@
+/* --- Shared Layout & Component CSS for Tax Calculator --- */
+
+.header-container {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.header-logo-box {
+    background-color: #059669;
+    color: white;
+    padding: 0.625rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.2);
+}
+
+.header-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+.header-subtitle {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.tax-main {
+    max-width: 42rem;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.tax-card {
+    background-color: var(--card-bg, #ffffff);
+    border-radius: 1.5rem;
+    box-shadow:
+        0 20px 25px -5px rgba(0, 0, 0, 0.05),
+        0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color, #f1f5f9);
+    padding: 1.5rem;
+    transition:
+        background-color 0.3s ease,
+        border-color 0.3s ease;
+}
+
+@media (min-width: 640px) {
+    .tax-card {
+        padding: 2.5rem;
+    }
+}
+
+.tax-header-text {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.tax-heading {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+}
+
+.tax-desc {
+    color: var(--subtitle-color, #64748b);
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.tax-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.tax-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 0.25rem;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.currency-symbol {
+    position: absolute;
+    inset: 0 auto 0 0;
+    padding-left: 0.75rem;
+    display: flex;
+    align-items: center;
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+.tax-input {
+    width: 100%;
+    padding: 0.625rem 1rem;
+    background-color: var(--bg-color, #f8fafc);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-color, #1e293b);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.tax-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.tax-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .tax-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.tax-results-box {
+    margin-top: 2rem;
+    background-color: var(--bg-color, #f8fafc);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: var(--subtitle-color, #64748b);
+}
+
+.result-value-dark {
+    font-weight: 600;
+    color: var(--text-color, #1e293b);
+}
+
+.result-value-green {
+    font-weight: 600;
+    color: #059669;
+}
+
+.result-value-blue {
+    font-weight: 600;
+    color: #2563eb;
+}
+
+.result-total-row {
+    border-top: 1px solid var(--border-color, #e2e8f0);
+    padding-top: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.grand-total-label {
+    font-weight: 700;
+    color: var(--text-color, #1e293b);
+    font-size: 1rem;
+}
+
+.grand-total-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #2563eb;
+}
+
+.reset-wrapper {
+    margin-top: 1.5rem;
+    text-align: right;
+}
+
+.reset-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.reset-btn:hover {
+    color: #ef4444;
+}
+
+/* --- Dark Mode Overrides for Tax Page --- */
+
+body.dark-mode {
+    background-color: var(--bg-color, #0f172a) !important;
+    color: var(--text-color, #f8fafc) !important;
+}
+
+body.dark-mode header,
+body.dark-mode footer {
+    background-color: var(--header-bg, #1e293b) !important;
+    border-color: var(--border-color, #334155) !important;
+}
+
+body.dark-mode .tax-card {
+    background-color: var(--card-bg, #1e293b) !important;
+    border-color: var(--border-color, #334155) !important;
+}
+
+body.dark-mode .tax-heading,
+body.dark-mode .header-title,
+body.dark-mode .result-value-dark,
+body.dark-mode .grand-total-label {
+    color: var(--text-color, #f8fafc) !important;
+}
+
+body.dark-mode .tax-desc,
+body.dark-mode .header-subtitle,
+body.dark-mode .tax-label,
+body.dark-mode .result-row {
+    color: var(--subtitle-color, #94a3b8) !important;
+}
+
+body.dark-mode .tax-input {
+    background-color: #0f172a !important;
+    color: var(--text-color, #f8fafc) !important;
+    border-color: var(--border-color, #334155) !important;
+}
+
+body.dark-mode .tax-results-box {
+    background-color: #0f172a !important;
+    border-color: var(--border-color, #334155) !important;
+}
+
+body.dark-mode .reset-btn {
+    color: var(--subtitle-color, #94a3b8) !important;
+}
+
+body.dark-mode .reset-btn:hover {
+    color: #ef4444 !important;
+}
