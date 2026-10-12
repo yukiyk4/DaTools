@@ -125,6 +125,13 @@ body.dark-mode .shadow-lg {
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
 }
 
+/* Glassmorphism adjustment for Browser Secure badge */
+body.has-wallpaper .bg-emerald-50 {
+    background-color: rgba(16, 185, 129, 0.15) !important;
+    border-color: rgba(16, 185, 129, 0.3) !important;
+    color: #6ee7b7 !important;
+}
+
 /* ==========================================
    DocToPDF Pro - Glassmorphism & Wallpaper Rules
    ========================================== */
