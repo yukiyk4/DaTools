@@ -1,0 +1,140 @@
+/* CSS Variables for Light & Dark Mode */
+:root {
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-color: #1e293b;
+    --subtitle-color: #64748b;
+    --header-bg: #ffffff;
+    --border-color: #e2e8f0;
+}
+
+/* Dark Theme Colors */
+body.dark-mode {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-color: #f8fafc;
+    --subtitle-color: #94a3b8;
+    --header-bg: #1e293b;
+    --border-color: #334155;
+    background-color: var(--bg-color) !important;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+header {
+    background-color: var(--header-bg) !important;
+    border-color: var(--border-color) !important;
+}
+
+footer {
+    background-color: var(--header-bg) !important;
+    border-color: var(--border-color) !important;
+    color: var(--subtitle-color) !important;
+}
+
+/* Force the main container to inherit the background color in dark mode */
+body.dark-mode main {
+    background-color: var(--bg-color) !important;
+}
+
+/* Ensure the central card matches dark mode properly */
+body.dark-mode .bg-white {
+    background-color: var(--card-bg) !important;
+    border-color: var(--border-color) !important;
+}
+
+body.dark-mode #card-container {
+    background-color: var(--card-bg) !important;
+    border-color: var(--border-color) !important;
+}
+
+body.dark-mode #main-title {
+    color: var(--text-color) !important;
+}
+
+body.dark-mode #main-desc {
+    color: var(--subtitle-color) !important;
+}
+
+body.dark-mode select,
+body.dark-mode textarea {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+    border-color: var(--border-color) !important;
+}
+
+body.dark-mode #preview-box-inner {
+    background-color: #0f172a !important;
+    border-color: var(--border-color) !important;
+}
+
+.dragover {
+    border-color: #3b82f6 !important;
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+/* Dark Mode Toggle Button */
+.theme-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--subtitle-color);
+    color: var(--text-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+    opacity: 0.8;
+}
+
+/* Helper Button Styling */
+.button2 {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background-color: #e2e8f0;
+    color: #334155;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.button2:hover {
+    background-color: #cbd5e1;
+}
+
+body.dark-mode .button2 {
+    background-color: #334155;
+    color: #f8fafc;
+}
+
+body.dark-mode .button2:hover {
+    background-color: #475569;
+}
+
+/* Fix the white/light shadow in dark mode */
+body.dark-mode .shadow-xl,
+body.dark-mode .shadow-2xl,
+body.dark-mode .shadow-lg {
+    box-shadow:
+        0 20px 25px -5px rgba(0, 0, 0, 0.5),
+        0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Force title to use the dark mode text color */
+body.dark-mode #app-title {
+    color: var(--text-color) !important;
+}

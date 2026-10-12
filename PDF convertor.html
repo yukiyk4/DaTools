@@ -1,411 +1,249 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="h-full">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal Client-Side File to PDF Converter</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- jsPDF Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <!-- html2canvas Library for rendering rich content or HTML views to PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .dragover { border-color: #3b82f6 !important; background-color: rgba(59, 130, 246, 0.05); }
-    </style>
-    <link rel="stylesheet" href="Style.css">
-</head>
-<body class="h-full bg-slate-50 text-slate-800 flex flex-col justify-between selection:bg-blue-500 selection:text-white">
-
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
-        <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <button class="button2" onclick="window.location.href='index.html'">Back To Homepage</button>
-                <div class="bg-blue-600 text-white p-2.5 rounded-xl shadow-md shadow-blue-500/20 flex items-center justify-center">
-                    <i class="fa-solid fa-file-pdf text-xl"></i>
-                </div>
-                <div>
-                    <h1 class="text-lg font-bold tracking-tight text-slate-900">DocToPDF Pro</h1>
-                    <p class="text-xs text-slate-500">100% Client-Side & Secure Conversion</p>
-                </div>
-            </div>
-            <div class="flex items-center space-x-2 text-xs font-medium bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full border border-emerald-200">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>Browser Secure (No Server Uploads)</span>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-4xl w-full mx-auto px-4 py-8 flex-grow flex flex-col justify-center">
-        <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden p-6 sm:p-10">
-            
-            <!-- Intro description -->
-            <div class="text-center mb-8">
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Convert Any File to PDF Instantly</h2>
-                <p class="text-slate-500 mt-2 text-sm sm:text-base">Drag & drop your Images (PNG, JPG), Text files (.txt), or HTML snippets to build high-quality PDFs right in your browser.</p>
-            </div>
-
-            <!-- Drag and Drop Dropzone -->
-            <div id="dropzone" class="border-2 border-dashed border-slate-300 rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-300 hover:border-blue-400 hover:bg-blue-50/30 group relative">
-                <input type="file" id="fileInput" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept=".txt,.md,.html,.htm,.png,.jpg,.jpeg,.webp">
-                <div class="flex flex-col items-center justify-center space-y-4 pointer-events-none">
-                    <div class="w-16 h-16 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300 shadow-xs">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Universal Client-Side File to PDF Converter</title>
+        <!-- Tailwind CSS CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- FontAwesome Icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <!-- Google Fonts Inter -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet" />
+        <!-- jsPDF Library -->
+        <script src="https://cdnjs.cloudflare.com/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <!-- html2canvas Library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <!-- Link to your separate CSS file -->
+        <link rel="stylesheet" href="style%20PDF%20convert.css" />
+    </head>
+    <body
+        class="h-full bg-slate-50 text-slate-800 flex flex-col justify-between selection:bg-blue-500 selection:text-white">
+        <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+            <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button
+                        class="button2"
+                        onclick="window.location.href='index.html'"
+                        aria-label="Back to Homepage"
+                        title="Back to Homepage">
+                        <i class="fa-solid fa-house"></i>
+                    </button>
+                    <div
+                        class="bg-blue-600 text-white p-2.5 rounded-xl shadow-md shadow-blue-500/20 flex items-center justify-center">
+                        <i class="fa-solid fa-file-pdf text-xl"></i>
                     </div>
                     <div>
-                        <p class="text-base font-semibold text-slate-700">Choose a file or <span class="text-blue-600 underline underline-offset-2">browse</span></p>
-                        <p class="text-xs text-slate-400 mt-1">Supports TXT, Markdown, HTML, PNG, JPG, and WEBP</p>
+                        <h1 id="app-title" class="text-lg font-bold tracking-tight text-slate-900">DocToPDF Pro</h1>
+                        <p class="text-xs text-slate-500">100% Client-Side & Secure Conversion</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <!-- Dark Mode Toggle Button -->
+                    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+                        <span id="theme-icon">🌙</span> <span id="theme-text">Dark Mode</span>
+                    </button>
+
+                    <div
+                        class="hidden sm:flex items-center space-x-2 text-xs font-medium bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full border border-emerald-200">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Browser Secure</span>
                     </div>
                 </div>
             </div>
+        </header>
 
-            <!-- File Details & Preview Panel (Hidden Initially) -->
-            <div id="previewContainer" class="hidden mt-8 transition-all animate-fadeIn">
-                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div class="flex items-center space-x-4 overflow-hidden">
-                        <div id="fileIconWrapper" class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl shrink-0">
-                            <i id="fileTypeIcon" class="fa-solid fa-file-lines"></i>
+        <main class="max-w-4xl w-full mx-auto px-4 py-8 flex-grow flex flex-col justify-center">
+            <div
+                id="card-container"
+                class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden p-6 sm:p-10 transition-colors duration-300">
+                <!-- Intro description -->
+                <div class="text-center mb-8">
+                    <h2 id="main-title" class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                        Convert Any File to PDF Instantly
+                    </h2>
+                    <p id="main-desc" class="text-slate-500 mt-2 text-sm sm:text-base">
+                        Drag & drop your Images (PNG, JPG), Text files (.txt), or HTML snippets to build high-quality
+                        PDFs right in your browser.
+                    </p>
+                </div>
+
+                <!-- Drag and Drop Dropzone -->
+                <div
+                    id="dropzone"
+                    class="border-2 border-dashed border-slate-300 rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-300 hover:border-blue-400 hover:bg-blue-50/30 group relative">
+                    <input
+                        type="file"
+                        id="fileInput"
+                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                        accept=".txt,.md,.html,.htm,.png,.jpg,.jpeg,.webp" />
+                    <div class="flex flex-col items-center justify-center space-y-4 pointer-events-none">
+                        <div
+                            class="w-16 h-16 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300 shadow-xs">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
                         </div>
-                        <div class="truncate">
-                            <h4 id="fileNameDisplay" class="font-semibold text-slate-800 text-sm truncate">filename.txt</h4>
-                            <div class="flex items-center space-x-2 mt-0.5">
-                                <span id="fileSizeDisplay" class="text-xs text-slate-400 font-medium">12 KB</span>
-                                <span class="text-slate-300">•</span>
-                                <span id="fileTypeDisplay" class="text-xs uppercase font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">TXT</span>
+                        <div>
+                            <p class="text-base font-semibold text-slate-700">
+                                Choose a file or <span class="text-blue-600 underline underline-offset-2">browse</span>
+                            </p>
+                            <p class="text-xs text-slate-400 mt-1">Supports TXT, Markdown, HTML, PNG, JPG, and WEBP</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File Details & Preview Panel (Hidden Initially) -->
+                <div id="previewContainer" class="hidden mt-8 transition-all animate-fadeIn">
+                    <div
+                        id="preview-box-inner"
+                        class="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div class="flex items-center space-x-4 overflow-hidden">
+                            <div
+                                id="fileIconWrapper"
+                                class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl shrink-0">
+                                <i id="fileTypeIcon" class="fa-solid fa-file-lines"></i>
+                            </div>
+                            <div class="truncate">
+                                <h4 id="fileNameDisplay" class="font-semibold text-slate-800 text-sm truncate">
+                                    filename.txt
+                                </h4>
+                                <div class="flex items-center space-x-2 mt-0.5">
+                                    <span id="fileSizeDisplay" class="text-xs text-slate-400 font-medium">12 KB</span>
+                                    <span class="text-slate-300">•</span>
+                                    <span
+                                        id="fileTypeDisplay"
+                                        class="text-xs uppercase font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded"
+                                        >TXT</span
+                                    >
+                                </div>
                             </div>
                         </div>
+                        <button
+                            id="removeFileBtn"
+                            class="text-slate-400 hover:text-red-500 p-2 rounded-lg hover:bg-red-50 transition-colors text-sm font-medium flex items-center space-x-1 self-end sm:self-center">
+                            <i class="fa-solid fa-trash-can mr-1"></i> Remove
+                        </button>
                     </div>
-                    <button id="removeFileBtn" class="text-slate-400 hover:text-red-500 p-2 rounded-lg hover:bg-red-50 transition-colors text-sm font-medium flex items-center space-x-1 self-end sm:self-center">
-                        <i class="fa-solid fa-trash-can mr-1"></i> Remove
-                    </button>
+
+                    <!-- Live Preview / Editable Area -->
+                    <div id="contentPreviewBox" class="mt-4 hidden">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2"
+                            >Content Preview / Text Content</label
+                        >
+                        <textarea
+                            id="textContentPreview"
+                            rows="5"
+                            class="w-full p-4 text-sm font-mono bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-y"></textarea>
+                    </div>
+
+                    <!-- Image Preview Box -->
+                    <div id="imagePreviewBox" class="mt-4 hidden text-center">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 text-left"
+                            >Image Preview</label
+                        >
+                        <div
+                            class="max-h-64 overflow-hidden rounded-xl border border-slate-200 inline-block bg-slate-900 p-2">
+                            <img
+                                id="imageElementPreview"
+                                src=""
+                                alt="Preview"
+                                class="max-h-60 object-contain mx-auto rounded" />
+                        </div>
+                    </div>
+
+                    <!-- PDF Layout Settings Toolbar -->
+                    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="pdfPageSize" class="block text-xs font-semibold text-slate-600 mb-1"
+                                >Page Format</label
+                            >
+                            <select
+                                id="pdfPageSize"
+                                class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 focus:ring-2 focus:ring-blue-500 outline-none">
+                                <option value="a4">A4 Standard</option>
+                                <option value="letter">US Letter</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="pdfOrientation" class="block text-xs font-semibold text-slate-600 mb-1"
+                                >Orientation</label
+                            >
+                            <select
+                                id="pdfOrientation"
+                                class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 focus:ring-2 focus:ring-blue-500 outline-none">
+                                <option value="portrait">Portrait</option>
+                                <option value="landscape">Landscape</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Convert Action Button -->
+                    <div class="mt-8 flex flex-col sm:flex-row items-center justify-end gap-3">
+                        <button
+                            id="convertBtn"
+                            class="w-full sm:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 transition-all duration-200 flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>Convert to PDF</span>
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Live Preview / Editable Area or Custom Settings -->
-                <div id="contentPreviewBox" class="mt-4 hidden">
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Content Preview / Text Content</label>
-                    <textarea id="textContentPreview" rows="5" class="w-full p-4 text-sm font-mono bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-y"></textarea>
+                <!-- Loading Spinner State -->
+                <div id="loadingState" class="hidden py-12 text-center">
+                    <div class="inline-block relative w-16 h-16 mb-4">
+                        <div class="absolute inset-0 rounded-full border-4 border-blue-100"></div>
+                        <div
+                            class="absolute inset-0 rounded-full border-4 border-blue-600 border-t-transparent animate-spin"></div>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-800">Generating Your PDF...</h3>
+                    <p class="text-xs text-slate-500 mt-1">Please wait while we render and compile your document.</p>
                 </div>
 
-                <!-- Image Preview Box -->
-                <div id="imagePreviewBox" class="mt-4 hidden text-center">
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 text-left">Image Preview</label>
-                    <div class="max-h-64 overflow-hidden rounded-xl border border-slate-200 inline-block bg-slate-900 p-2">
-                        <img id="imageElementPreview" src="" alt="Preview" class="max-h-60 object-contain mx-auto rounded">
+                <!-- Success Download State -->
+                <div id="successState" class="hidden py-8 text-center animate-fadeIn">
+                    <div
+                        class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mx-auto mb-4 shadow-xs">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900">PDF Ready for Download!</h3>
+                    <p class="text-sm text-slate-500 mt-1">
+                        Your file has been successfully converted securely in your browser.
+                    </p>
+
+                    <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+                        <a
+                            id="downloadLink"
+                            download="converted-document.pdf"
+                            class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-200 flex items-center space-x-2">
+                            <i class="fa-solid fa-download"></i>
+                            <span>Download PDF</span>
+                        </a>
+                        <button
+                            id="convertAnotherBtn"
+                            class="px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl transition-all duration-200 flex items-center space-x-2">
+                            <i class="fa-solid fa-rotate-right"></i>
+                            <span>Convert Another File</span>
+                        </button>
                     </div>
                 </div>
 
-                <!-- PDF Layout Settings Toolbar -->
-                <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label for="pdfPageSize" class="block text-xs font-semibold text-slate-600 mb-1">Page Format</label>
-                        <select id="pdfPageSize" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 focus:ring-2 focus:ring-blue-500 outline-none">
-                            <option value="a4">A4 Standard</option>
-                            <option value="letter">US Letter</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="pdfOrientation" class="block text-xs font-semibold text-slate-600 mb-1">Orientation</label>
-                        <select id="pdfOrientation" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 focus:ring-2 focus:ring-blue-500 outline-none">
-                            <option value="portrait">Portrait</option>
-                            <option value="landscape">Landscape</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Convert Action Button -->
-                <div class="mt-8 flex flex-col sm:flex-row items-center justify-end gap-3">
-                    <button id="convertBtn" class="w-full sm:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 transition-all duration-200 flex items-center justify-center space-x-2">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        <span>Convert to PDF</span>
-                    </button>
+                <!-- Error Notice Box -->
+                <div
+                    id="errorBox"
+                    class="hidden mt-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm flex items-center space-x-3">
+                    <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+                    <span id="errorMessageText">An error occurred during file processing.</span>
                 </div>
             </div>
+        </main>
 
-            <!-- Loading Spinner State (Hidden by default) -->
-            <div id="loadingState" class="hidden py-12 text-center">
-                <div class="inline-block relative w-16 h-16 mb-4">
-                    <div class="absolute inset-0 rounded-full border-4 border-blue-100"></div>
-                    <div class="absolute inset-0 rounded-full border-4 border-blue-600 border-t-transparent animate-spin"></div>
-                </div>
-                <h3 class="text-base font-bold text-slate-800">Generating Your PDF...</h3>
-                <p class="text-xs text-slate-500 mt-1">Please wait while we render and compile your document.</p>
-            </div>
+        <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+            <p>Bro this shit is free</p>
+        </footer>
 
-            <!-- Success Download State (Hidden by default) -->
-            <div id="successState" class="hidden py-8 text-center animate-fadeIn">
-                <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mx-auto mb-4 shadow-xs">
-                    <i class="fa-solid fa-check"></i>
-                </div>
-                <h3 class="text-xl font-bold text-slate-900">PDF Ready for Download!</h3>
-                <p class="text-sm text-slate-500 mt-1">Your file has been successfully converted securely in your browser.</p>
-                
-                <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
-                    <a id="downloadLink" download="converted-document.pdf" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-200 flex items-center space-x-2">
-                        <i class="fa-solid fa-download"></i>
-                        <span>Download PDF</span>
-                    </a>
-                    <button id="convertAnotherBtn" class="px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl transition-all duration-200 flex items-center space-x-2">
-                        <i class="fa-solid fa-rotate-right"></i>
-                        <span>Convert Another File</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Error Notice Box -->
-            <div id="errorBox" class="hidden mt-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm flex items-center space-x-3">
-                <i class="fa-solid fa-triangle-exclamation text-lg"></i>
-                <span id="errorMessageText">An error occurred during file processing.</span>
-            </div>
-
-        </div>
-    </main>
-
-    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
-        <p>Bro this shit is free</p>
-    </footer>
-
-    <script>
-        // DOM Elements
-        const dropzone = document.getElementById('dropzone');
-        const fileInput = document.getElementById('fileInput');
-        const previewContainer = document.getElementById('previewContainer');
-        const fileNameDisplay = document.getElementById('fileNameDisplay');
-        const fileSizeDisplay = document.getElementById('fileSizeDisplay');
-        const fileTypeDisplay = document.getElementById('fileTypeDisplay');
-        const fileTypeIcon = document.getElementById('fileTypeIcon');
-        const fileIconWrapper = document.getElementById('fileIconWrapper');
-        const removeFileBtn = document.getElementById('removeFileBtn');
-        const contentPreviewBox = document.getElementById('contentPreviewBox');
-        const textContentPreview = document.getElementById('textContentPreview');
-        const imagePreviewBox = document.getElementById('imagePreviewBox');
-        const imageElementPreview = document.getElementById('imageElementPreview');
-        const pdfPageSize = document.getElementById('pdfPageSize');
-        const pdfOrientation = document.getElementById('pdfOrientation');
-        const convertBtn = document.getElementById('convertBtn');
-        const loadingState = document.getElementById('loadingState');
-        const successState = document.getElementById('successState');
-        const downloadLink = document.getElementById('downloadLink');
-        const convertAnotherBtn = document.getElementById('convertAnotherBtn');
-        const errorBox = document.getElementById('errorBox');
-        const errorMessageText = document.getElementById('errorMessageText');
-
-        let currentFile = null;
-        let fileContentData = null;
-
-        // Utility: Format File Size
-        function formatBytes(bytes, decimals = 2) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const dm = decimals < 0 ? 0 : decimals;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-        }
-
-        // Drag and Drop Visual Effect Handlers
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropzone.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                dropzone.classList.add('dragover');
-            }, false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropzone.addEventListener(eventName, (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                dropzone.classList.remove('dragover');
-            }, false);
-        });
-
-        dropzone.addEventListener('drop', (e) => {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            if (files.length > 0) {
-                handleSelectedFile(files[0]);
-            }
-        });
-
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                handleSelectedFile(e.target.files[0]);
-            }
-        });
-
-        // Handle File Processing & Preview
-        function handleSelectedFile(file) {
-            currentFile = file;
-            hideError();
-
-            fileNameDisplay.textContent = file.name;
-            fileSizeDisplay.textContent = formatBytes(file.size);
-            const ext = file.name.split('.').pop().toLowerCase();
-            fileTypeDisplay.textContent = ext;
-
-            // Update Icon & UI based on extension
-            contentPreviewBox.classList.add('hidden');
-            imagePreviewBox.classList.add('hidden');
-
-            if (['png', 'jpg', 'jpeg', 'webp'].includes(ext)) {
-                fileTypeIcon.className = "fa-solid fa-file-image";
-                fileIconWrapper.className = "w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl shrink-0";
-                
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    fileContentData = e.target.result;
-                    imageElementPreview.src = fileContentData;
-                    imagePreviewBox.classList.remove('hidden');
-                }
-                reader.readAsDataURL(file);
-
-            } else if (['txt', 'md', 'html', 'htm', 'json', 'csv', 'js'].includes(ext)) {
-                fileTypeIcon.className = "fa-solid fa-file-lines";
-                fileIconWrapper.className = "w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl shrink-0";
-
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    fileContentData = e.target.result;
-                    textContentPreview.value = fileContentData;
-                    contentPreviewBox.classList.remove('hidden');
-                }
-                reader.readAsText(file);
-            } else {
-                showError("Unsupported file extension. Please select an image (.png, .jpg) or text-based file (.txt, .md, .html).");
-                return;
-            }
-
-            // Hide dropzone and show preview controls
-            dropzone.classList.add('hidden');
-            previewContainer.classList.remove('hidden');
-        }
-
-        // Remove File Handler
-        removeFileBtn.addEventListener('click', () => {
-            resetApp();
-        });
-
-        convertAnotherBtn.addEventListener('click', () => {
-            resetApp();
-        });
-
-        function resetApp() {
-            currentFile = null;
-            fileContentData = null;
-            fileInput.value = '';
-            previewContainer.classList.add('hidden');
-            successState.classList.add('hidden');
-            dropzone.classList.remove('hidden');
-            hideError();
-        }
-
-        function showError(msg) {
-            errorMessageText.textContent = msg;
-            errorBox.classList.remove('hidden');
-        }
-
-        function hideError() {
-            errorBox.classList.add('hidden');
-        }
-
-        // PDF Generation Logic
-        convertBtn.addEventListener('click', async () => {
-            if (!currentFile) return;
-
-            previewContainer.classList.add('hidden');
-            loadingState.classList.remove('hidden');
-            hideError();
-
-            try {
-                const { jsPDF } = window.jspdf;
-                const orientation = pdfOrientation.value;
-                const format = pdfPageSize.value;
-
-                const doc = new jsPDF({
-                    orientation: orientation,
-                    unit: 'mm',
-                    format: format
-                });
-
-                const ext = currentFile.name.split('.').pop().toLowerCase();
-
-                if (['png', 'jpg', 'jpeg', 'webp'].includes(ext)) {
-                    // Convert Image to PDF
-                    const imgData = fileContentData;
-                    const img = new Image();
-                    img.src = imgData;
-                    
-                    await new Promise((resolve, reject) => {
-                        img.onload = () => resolve();
-                        img.onerror = (err) => reject(err);
-                    });
-
-                    const pageWidth = doc.internal.pageSize.getWidth();
-                    const pageHeight = doc.internal.pageSize.getHeight();
-                    const margin = 10; // 10mm margin
-                    const maxW = pageWidth - (margin * 2);
-                    const maxH = pageHeight - (margin * 2);
-
-                    let imgWidth = img.width;
-                    let imgHeight = img.height;
-                    let ratio = Math.min(maxW / imgWidth, maxH / imgHeight);
-
-                    let renderW = imgWidth * ratio;
-                    let renderH = imgHeight * ratio;
-                    let posX = (pageWidth - renderW) / 2;
-                    let posY = (pageHeight - renderH) / 2;
-
-                    doc.addImage(imgData, 'JPEG', posX, posY, renderW, renderH);
-
-                } else {
-                    // Text or Code or HTML to PDF
-                    const textContent = textContentPreview.value || fileContentData;
-                    doc.setFont("Helvetica", "normal");
-                    doc.setFontSize(11);
-                    
-                    const pageWidth = doc.internal.pageSize.getWidth();
-                    const pageHeight = doc.internal.pageSize.getHeight();
-                    const margin = 15;
-                    const maxLineWidth = pageWidth - (margin * 2);
-
-                    const lines = doc.splitTextToSize(textContent, maxLineWidth);
-                    
-                    let cursorY = margin;
-                    const lineHeight = 7; // mm per line
-
-                    for (let i = 0; i < lines.length; i++) {
-                        if (cursorY + lineHeight > pageHeight - margin) {
-                            doc.addPage();
-                            cursorY = margin;
-                        }
-                        doc.text(lines[i], margin, cursorY);
-                        cursorY += lineHeight;
-                    }
-                }
-
-                // Output PDF blob and configure download link
-                const pdfBlob = doc.output('blob');
-                const blobUrl = URL.createObjectURL(pdfBlob);
-                
-                const baseName = currentFile.name.substring(0, currentFile.name.lastIndexOf('.')) || currentFile.name;
-                downloadLink.href = blobUrl;
-                downloadLink.download = `${baseName}-converted.pdf`;
-
-                loadingState.classList.add('hidden');
-                successState.classList.remove('hidden');
-
-            } catch (err) {
-                console.error(err);
-                loadingState.classList.add('hidden');
-                previewContainer.classList.remove('hidden');
-                showError("Failed to generate PDF. Please check file contents or try another file.");
-            }
-        });
-    </script>
-</body>
+        <!-- Link to your separate JavaScript file -->
+        <script src="PDF%20convert.js"></script>
+    </body>
 </html>
