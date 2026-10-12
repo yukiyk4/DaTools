@@ -1,0 +1,484 @@
+/* ==========================================
+   DaTools Global Theme & Variables Setup
+   ========================================== */
+
+:root {
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-color: #1e293b;
+    --subtitle-color: #64748b;
+    --border-color: #e2e8f0;
+    --card-alpha: 0.65;
+}
+
+body.dark-mode {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-color: #f8fafc;
+    --subtitle-color: #94a3b8;
+    --border-color: #334155;
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: "Inter", sans-serif;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        background-image 0.3s ease;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* ==========================================
+   Universal Header & Footer
+   ========================================== */
+
+header {
+    background-color: var(--card-bg, #ffffff);
+    border-bottom: 1px solid var(--border-color, #e2e8f0);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    transition:
+        background-color 0.3s ease,
+        border-color 0.3s ease;
+}
+
+footer {
+    background-color: var(--card-bg, #ffffff);
+    border-top: 1px solid var(--border-color, #e2e8f0);
+    padding: 1.5rem 0;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--subtitle-color, #94a3b8);
+    transition:
+        background-color 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.header-container {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+}
+
+.header-logo-box {
+    padding: 0.625rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.header-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--text-color);
+}
+
+.header-subtitle {
+    font-size: 0.75rem;
+    color: var(--subtitle-color);
+}
+
+/* ==========================================
+   Buttons & Controls
+   ========================================== */
+
+.button2 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    font-size: 1rem;
+    border-radius: 10px;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.button2:hover {
+    border-color: #3b82f6;
+    color: #3b82f6;
+}
+
+.theme-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.875rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+    border-color: #3b82f6;
+}
+
+/* ==========================================
+   Homepage Grid & Tool Cards
+   ========================================== */
+
+.tool-card {
+    background-color: var(--card-bg, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.tool-card:hover {
+    border-color: #3b82f6;
+    transform: translateY(-3px);
+    box-shadow:
+        0 20px 25px -5px rgba(0, 0, 0, 0.08),
+        0 8px 10px -6px rgba(0, 0, 0, 0.08);
+}
+
+.tool-icon-box {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.tool-card-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-color, #0f172a);
+}
+
+.tool-card-desc {
+    font-size: 0.8125rem;
+    color: var(--subtitle-color, #64748b);
+    margin-top: 0.25rem;
+    line-height: 1.4;
+}
+
+.tool-arrow {
+    color: var(--subtitle-color, #cbd5e1);
+    transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+}
+
+.tool-card:hover .tool-arrow {
+    transform: translateX(4px);
+    color: #3b82f6;
+}
+
+/* ==========================================
+   DaTax Calculator & Tool Page Layouts
+   ========================================== */
+
+.tax-main {
+    max-width: 46rem;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.tax-card {
+    background-color: var(--card-bg, #ffffff);
+    border-radius: 1.5rem;
+    box-shadow:
+        0 20px 25px -5px rgba(0, 0, 0, 0.05),
+        0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color, #f1f5f9);
+    padding: 1.5rem;
+    transition:
+        background-color 0.3s ease,
+        border-color 0.3s ease;
+}
+
+@media (min-width: 640px) {
+    .tax-card {
+        padding: 2.5rem;
+    }
+}
+
+.tax-header-text {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.tax-heading {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--text-color);
+}
+
+.tax-desc {
+    color: var(--subtitle-color);
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.tax-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.tax-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--subtitle-color);
+    margin-bottom: 0.25rem;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.currency-symbol {
+    position: absolute;
+    inset: 0 auto 0 0;
+    padding-left: 0.75rem;
+    display: flex;
+    align-items: center;
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+.tax-input {
+    width: 100%;
+    padding: 0.625rem 1rem;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-color);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.tax-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.tax-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .tax-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.tax-results-box {
+    margin-top: 2rem;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: var(--subtitle-color);
+}
+
+.result-value-dark {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.result-value-green {
+    font-weight: 600;
+    color: #059669;
+}
+
+.result-value-blue {
+    font-weight: 600;
+    color: #2563eb;
+}
+
+.result-total-row {
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.grand-total-label {
+    font-weight: 700;
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.grand-total-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #2563eb;
+}
+
+.reset-wrapper {
+    margin-top: 1.5rem;
+    text-align: right;
+}
+
+.reset-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--subtitle-color);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.reset-btn:hover {
+    color: #ef4444;
+}
+
+/* ==========================================
+   Settings Centered Modal Popup
+   ========================================== */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 1rem;
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.hidden {
+    display: none;
+}
+
+.modal-card {
+    background-color: var(--card-bg, #ffffff);
+    color: var(--text-color, #1e293b);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    width: 100%;
+    max-width: 28rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: modalScaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalScaleUp {
+    0% {
+        transform: scale(0.92);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ==========================================
+   Glassmorphism & Translucency Rules
+   ========================================== */
+
+body.has-wallpaper header,
+body.has-wallpaper footer {
+    background-color: rgba(15, 23, 42, var(--card-alpha)) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+}
+
+body.has-wallpaper .tool-card,
+body.has-wallpaper .tax-card,
+body.has-wallpaper #card-container {
+    background-color: rgba(15, 23, 42, var(--card-alpha)) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+}
+
+body.has-wallpaper .tax-results-box,
+body.has-wallpaper .tax-input,
+body.has-wallpaper #preview-box-inner {
+    background-color: rgba(15, 23, 42, calc(var(--card-alpha) + 0.1)) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+}
+
+body.has-wallpaper .tool-card-title,
+body.has-wallpaper .tax-heading,
+body.has-wallpaper .result-value-dark,
+body.has-wallpaper .grand-total-label,
+body.has-wallpaper .tax-card h2,
+body.has-wallpaper .tax-card label,
+body.has-wallpaper .tax-card span,
+body.has-wallpaper #card-container h2,
+body.has-wallpaper #card-container h3,
+body.has-wallpaper #card-container h4 {
+    color: #ffffff !important;
+}
+
+body.has-wallpaper .tool-card-desc,
+body.has-wallpaper .tax-desc,
+body.has-wallpaper .tax-label,
+body.has-wallpaper .tax-card p,
+body.has-wallpaper #card-container p,
+body.has-wallpaper #card-container label,
+body.has-wallpaper .result-row {
+    color: #cbd5e1 !important;
+}

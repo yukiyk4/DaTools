@@ -6,6 +6,7 @@
     --subtitle-color: #64748b;
     --header-bg: #ffffff;
     --border-color: #e2e8f0;
+    --card-alpha: 0.65;
 }
 
 /* Dark Theme Colors */
@@ -16,46 +17,43 @@ body.dark-mode {
     --subtitle-color: #94a3b8;
     --header-bg: #1e293b;
     --border-color: #334155;
-    background-color: var(--bg-color) !important;
+    background-color: var(--bg-color);
 }
 
 body {
     font-family: "Inter", sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
-    transition:
-        background-color 0.3s ease,
-        color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 header {
-    background-color: var(--header-bg) !important;
-    border-color: var(--border-color) !important;
+    background-color: var(--header-bg);
+    border-color: var(--border-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 footer {
-    background-color: var(--header-bg) !important;
-    border-color: var(--border-color) !important;
-    color: var(--subtitle-color) !important;
+    background-color: var(--header-bg);
+    border-color: var(--border-color);
+    color: var(--subtitle-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Force the main container to inherit the background color in dark mode */
+/* Force main container to inherit background color in dark mode */
 body.dark-mode main {
-    background-color: var(--bg-color) !important;
+    background-color: var(--bg-color);
 }
 
-/* Ensure the central card matches dark mode properly */
-body.dark-mode .bg-white {
-    background-color: var(--card-bg) !important;
-    border-color: var(--border-color) !important;
-}
-
+/* Central card styling for standard dark mode */
+body.dark-mode .bg-white,
 body.dark-mode #card-container {
     background-color: var(--card-bg) !important;
     border-color: var(--border-color) !important;
 }
 
-body.dark-mode #main-title {
+body.dark-mode #main-title,
+body.dark-mode #app-title {
     color: var(--text-color) !important;
 }
 
@@ -64,12 +62,7 @@ body.dark-mode #main-desc {
 }
 
 body.dark-mode select,
-body.dark-mode textarea {
-    background-color: #0f172a !important;
-    color: #f8fafc !important;
-    border-color: var(--border-color) !important;
-}
-
+body.dark-mode textarea,
 body.dark-mode #preview-box-inner {
     background-color: #0f172a !important;
     border-color: var(--border-color) !important;
@@ -125,16 +118,65 @@ body.dark-mode .button2:hover {
     background-color: #475569;
 }
 
-/* Fix the white/light shadow in dark mode */
+/* Shadow fix for dark mode */
 body.dark-mode .shadow-xl,
 body.dark-mode .shadow-2xl,
 body.dark-mode .shadow-lg {
-    box-shadow:
-        0 20px 25px -5px rgba(0, 0, 0, 0.5),
-        0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* Force title to use the dark mode text color */
-body.dark-mode #app-title {
-    color: var(--text-color) !important;
+/* ==========================================
+   DocToPDF Pro - Glassmorphism & Wallpaper Rules
+   ========================================== */
+
+/* 1. Force Header & Footer Glassmorphism */
+body.has-wallpaper header,
+body.has-wallpaper footer,
+body.has-wallpaper.dark-mode header,
+body.has-wallpaper.dark-mode footer {
+    background-color: rgba(15, 23, 42, var(--card-alpha)) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* 2. Strip background from body and layout wrappers when wallpaper is active */
+body.has-wallpaper,
+body.has-wallpaper main,
+body.has-wallpaper.dark-mode,
+body.has-wallpaper.dark-mode main {
+    background-color: transparent !important;
+}
+
+/* 3. Central Card Glassmorphism */
+body.has-wallpaper #card-container,
+body.has-wallpaper.dark-mode #card-container {
+    background-color: rgba(15, 23, 42, var(--card-alpha)) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+}
+
+/* 4. Text Contrast Adjustments */
+body.has-wallpaper header *,
+body.has-wallpaper footer *,
+body.has-wallpaper #card-container h2,
+body.has-wallpaper #card-container h3,
+body.has-wallpaper #card-container h4,
+body.has-wallpaper #main-title {
+    color: #ffffff !important;
+}
+
+body.has-wallpaper #card-container p,
+body.has-wallpaper #card-container label,
+body.has-wallpaper #main-desc {
+    color: #cbd5e1 !important;
+}
+
+/* 5. Inner Preview / Upload Box Glassmorphism */
+body.has-wallpaper #preview-box-inner,
+body.has-wallpaper.dark-mode #preview-box-inner {
+    background-color: rgba(15, 23, 42, calc(var(--card-alpha) + 0.1)) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
 }
