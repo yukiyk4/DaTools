@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en" class="h-full">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DaPDF Editor Pro - DaTools</title>
+        <!-- Tailwind CSS CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- FontAwesome Icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <!-- Google Fonts Inter -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+            rel="stylesheet" />
+        <!-- PDF.js CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+        <!-- PDF-LIB CDN -->
+        <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+        <!-- Universal Styles & Dedicated Editor Styles -->
+        <link rel="stylesheet" href="Style.css" />
+        <link rel="stylesheet" href="pdf-editor.css" />
+    </head>
+    <body class="h-full flex flex-col justify-between selection:bg-rose-500 selection:text-white">
+        <!-- Header Bar -->
+        <header>
+            <div class="header-container">
+                <div class="header-left">
+                    <a href="index.html" class="button2" title="Back to Homepage">
+                        <i class="fa-solid fa-house"></i>
+                    </a>
+                    <div class="header-logo-box bg-gradient-to-br from-rose-600 to-red-600">
+                        <i class="fa-solid fa-file-pen text-xl text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="header-title">DaPDF Editor Pro</h1>
+                        <p class="header-subtitle">Full-featured browser PDF editor & page manager</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="hidden sm:flex items-center space-x-2 text-xs font-medium bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 px-3 py-1.5 rounded-full border border-rose-200 dark:border-rose-800/50">
+                        <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+                        <span>Client-Side Secure</span>
+                    </div>
+                    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+                        <span id="theme-icon">🌙</span> <span id="theme-text">Dark Mode</span>
+                    </button>
+                    <button id="settings-btn" class="button2" aria-label="Open Settings" title="Settings">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="pdf-main">
+            <!-- Dropzone / File Loader -->
+            <div id="pdf-dropzone" class="pdf-drop-card">
+                <input type="file" id="pdf-input" accept="application/pdf" class="hidden" />
+                <div class="pdf-upload-icon">
+                    <i class="fa-solid fa-file-circle-plus"></i>
+                </div>
+                <h2 class="text-xl font-bold mb-2">Upload or Drag & Drop PDF File</h2>
+                <p class="text-xs text-slate-400 mb-6 max-w-md mx-auto">
+                    Edit text, draw annotations, add signatures, watermark, reorder, rotate, or split pages. Processed
+                    completely in your browser memory.
+                </p>
+                <button
+                    id="browse-btn"
+                    class="px-6 py-3 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl text-sm transition-all shadow-lg shadow-rose-500/25">
+                    <i class="fa-solid fa-folder-open mr-2"></i> Choose PDF File
+                </button>
+            </div>
+
+            <!-- PDF Workspace Layout (Hidden initially) -->
+            <div
+                id="editor-workspace"
+                class="hidden flex-1 flex flex-col min-h-0 bg-slate-900/10 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+                <!-- Top Interactive Editing Toolbar -->
+                <div
+                    class="bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs font-medium">
+                    <!-- Tool Selection Group -->
+                    <div class="flex items-center space-x-1 overflow-x-auto pb-1 sm:pb-0">
+                        <button id="tool-select" class="pdf-tool-btn active" title="Select / Pan">
+                            <i class="fa-solid fa-hand"></i>
+                        </button>
+                        <button id="tool-draw" class="pdf-tool-btn" title="Freehand Draw">
+                            <i class="fa-solid fa-pen-nib"></i>
+                        </button>
+                        <button id="tool-highlight" class="pdf-tool-btn" title="Highlighter">
+                            <i class="fa-solid fa-highlighter"></i>
+                        </button>
+                        <button id="tool-eraser" class="pdf-tool-btn" title="Eraser (Click annotation to remove)">
+                            <i class="fa-solid fa-eraser"></i>
+                        </button>
+                        <button id="tool-text" class="pdf-tool-btn" title="Add Text">
+                            <i class="fa-solid fa-font"></i>
+                        </button>
+                        <button id="tool-rect" class="pdf-tool-btn" title="Add Rectangle">
+                            <i class="fa-regular fa-square"></i>
+                        </button>
+                        <button id="tool-circle" class="pdf-tool-btn" title="Add Circle">
+                            <i class="fa-regular fa-circle"></i>
+                        </button>
+                        <button id="tool-watermark" class="pdf-tool-btn" title="Add Watermark">
+                            <i class="fa-solid fa-stamp"></i>
+                        </button>
+
+                        <div class="h-5 w-px bg-slate-300 dark:bg-slate-700 mx-1"></div>
+
+                        <!-- Color & Brush Customizer -->
+                        <div
+                            class="flex items-center space-x-1.5 bg-slate-200/60 dark:bg-slate-800/60 px-2 py-1 rounded-lg">
+                            <input
+                                type="color"
+                                id="picker-color"
+                                value="#e11d48"
+                                class="w-6 h-6 rounded cursor-pointer border-0 bg-transparent"
+                                title="Color Picker" />
+                            <select id="picker-size" class="bg-transparent text-xs font-semibold focus:outline-none">
+                                <option value="2">2px Thin</option>
+                                <option value="5" selected>5px Normal</option>
+                                <option value="12">12px Bold</option>
+                                <option value="24">24px Marker</option>
+                            </select>
+                        </div>
+
+                        <div class="h-5 w-px bg-slate-300 dark:bg-slate-700 mx-1"></div>
+
+                        <!-- Action controls -->
+                        <button id="btn-undo" class="pdf-tool-btn" title="Undo Annotation">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </button>
+                        <button
+                            id="btn-clear-page"
+                            class="pdf-tool-btn text-red-500 hover:text-red-600"
+                            title="Clear Current Page Annotations">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+
+                    <!-- Page Actions & Save Group -->
+                    <div class="flex items-center space-x-2">
+                        <button
+                            id="btn-close-pdf"
+                            class="px-3 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg transition-colors"
+                            title="Close/Reset current PDF">
+                            <i class="fa-solid fa-xmark mr-1"></i> Close PDF
+                        </button>
+                        <button
+                            id="btn-rotate-page"
+                            class="px-3 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                            title="Rotate Current Page">
+                            <i class="fa-solid fa-rotate-right mr-1"></i> Rotate
+                        </button>
+                        <button
+                            id="btn-delete-page"
+                            class="px-3 py-1.5 bg-red-500/10 text-red-600 hover:bg-red-500/20 rounded-lg transition-colors"
+                            title="Delete Current Page">
+                            <i class="fa-solid fa-trash mr-1"></i> Delete
+                        </button>
+                        <button
+                            id="btn-export-pdf"
+                            class="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-lg shadow-md shadow-rose-500/20 transition-colors flex items-center">
+                            <i class="fa-solid fa-download mr-1.5"></i> Export PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Split Workspace View (Sidebar + Canvas Stage) -->
+                <div class="flex-1 flex min-h-0 overflow-hidden">
+                    <!-- Page Thumbnails Sidebar -->
+                    <aside
+                        class="w-48 sm:w-56 bg-slate-100/50 dark:bg-slate-900/50 border-r border-slate-200 dark:border-slate-800 flex flex-col min-h-0">
+                        <div
+                            class="p-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-400"
+                                >Pages (<span id="total-page-count">0</span>)</span
+                            >
+                            <button
+                                id="btn-add-page"
+                                class="text-xs text-rose-500 hover:underline font-semibold"
+                                title="Insert blank page">
+                                + Add Blank
+                            </button>
+                        </div>
+                        <div id="thumbnail-container" class="flex-1 overflow-y-auto p-3 space-y-3">
+                            <!-- Page thumbnails injected dynamically -->
+                        </div>
+                    </aside>
+
+                    <!-- Main Editing Canvas Stage -->
+                    <section class="flex-1 flex flex-col min-h-0 bg-slate-950/20 relative">
+                        <!-- Navigation overlay bar -->
+                        <div
+                            class="absolute top-3 left-1/2 -translate-x-1/2 z-10 bg-slate-900/80 backdrop-blur-md text-white px-4 py-1.5 rounded-full border border-slate-700/60 shadow-xl flex items-center space-x-3 text-xs">
+                            <button id="btn-prev-page" class="hover:text-rose-400">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+                            <span class="font-medium"
+                                >Page <span id="current-page-num">1</span> of <span id="max-page-num">1</span></span
+                            >
+                            <button id="btn-next-page" class="hover:text-rose-400">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                            <div class="h-3 w-px bg-slate-700"></div>
+                            <button id="btn-zoom-out" class="hover:text-rose-400" title="Zoom Out">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                            <span id="zoom-label" class="font-mono">100%</span>
+                            <button id="btn-zoom-in" class="hover:text-rose-400" title="Zoom In">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+
+                        <!-- Canvas Scroll Container -->
+                        <div id="canvas-wrapper" class="flex-1 overflow-auto p-8 flex justify-center items-start">
+                            <div id="canvas-container" class="relative shadow-2xl rounded bg-white">
+                                <!-- Base PDF Render Canvas -->
+                                <canvas id="pdf-render-canvas" class="block rounded"></canvas>
+                                <!-- Overlay Drawing Canvas -->
+                                <canvas
+                                    id="annotation-canvas"
+                                    class="absolute top-0 left-0 z-10 cursor-crosshair rounded"></canvas>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <!-- Settings Modal Overlay -->
+        <div id="settings-modal" class="modal-overlay hidden">
+            <div class="modal-card">
+                <div
+                    class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200 dark:border-slate-700">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-gear text-rose-600"></i>
+                        <h3 class="font-bold text-lg">Hub Settings</h3>
+                    </div>
+                    <button id="close-modal" class="button2" title="Close Settings">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="space-y-4 text-sm">
+                    <div class="flex items-center justify-between py-2">
+                        <div>
+                            <p class="font-semibold">Quick Theme Toggle</p>
+                            <p class="text-xs text-slate-500">Switch between light and dark mode preferences.</p>
+                        </div>
+                        <button id="modal-theme-btn" class="theme-toggle-btn">Toggle Mode</button>
+                    </div>
+                    <div class="py-2 border-t border-slate-100 dark:border-slate-800 space-y-3">
+                        <div>
+                            <p class="font-semibold">Custom Background / Wallpaper</p>
+                            <p class="text-xs text-slate-500">
+                                Use a custom image link or upload a picture from your device.
+                            </p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Image URL</label>
+                            <div class="flex gap-2">
+                                <input
+                                    type="url"
+                                    id="bg-url-input"
+                                    placeholder="https://example.com/image.jpg"
+                                    class="tax-input text-xs py-1.5" />
+                                <button
+                                    id="apply-url-btn"
+                                    class="px-3 py-1.5 text-xs font-semibold bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition-colors">
+                                    Apply
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Upload Local Image</label>
+                            <input
+                                type="file"
+                                id="bg-file-input"
+                                accept="image/*"
+                                class="text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-rose-500/10 file:text-rose-600 hover:file:bg-rose-500/20 cursor-pointer" />
+                        </div>
+                        <div class="py-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
+                            <div class="flex justify-between items-center">
+                                <p class="font-semibold">Card Transparency</p>
+                                <span id="transparency-value" class="text-xs font-bold text-rose-600">65%</span>
+                            </div>
+                            <input
+                                type="range"
+                                id="transparency-slider"
+                                min="0.1"
+                                max="1"
+                                step="0.05"
+                                value="0.65"
+                                class="w-full accent-rose-600 cursor-pointer" />
+                        </div>
+                        <div class="pt-1">
+                            <button
+                                id="reset-bg-btn"
+                                class="w-full py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                                <i class="fa-solid fa-rotate-left mr-1"></i> Reset to Default Color
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Bro this shit is free</p>
+        </footer>
+
+        <!-- Universal App Logic + Dedicated PDF Editor Script -->
+        <script src="app.js"></script>
+        <script src="pdf-editor.js"></script>
+    </body>
+</html>
