@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpinWheel Pro - DaTools Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Hub Styles -->
+    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" href="roulette.css">
+</head>
+<body class="h-full flex flex-col justify-between selection:bg-blue-500 selection:text-white">
+
+    <!-- Header Bar -->
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <div class="header-logo-box bg-gradient-to-br from-indigo-500 to-purple-600">
+                    <i class="fa-solid fa-dharmachakra text-xl text-white animate-spin-slow"></i>
+                </div>
+                <div>
+                    <h1 class="header-title">SpinWheel Pro</h1>
+                    <p class="header-subtitle">Custom Decision Roulette</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <!-- Homepage Button -->
+                <button onclick="window.location.href='index.html'" class="button2" aria-label="Home" title="Back to Homepage">
+                    <i class="fa-solid fa-house"></i>
+                </button>
+
+                <!-- Sound Toggle Button -->
+                <button id="soundToggle" class="button2" aria-label="Toggle Sound" title="Toggle Sound">
+                    <i class="fa-solid fa-volume-high" id="soundIcon"></i>
+                </button>
+
+                <!-- Dark Mode Toggle Button -->
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+                    <span id="theme-icon">🌙</span> <span id="theme-text">Dark Mode</span>
+                </button>
+
+                <!-- Settings Button (Triggers Hub Settings Modal) -->
+                <button id="settings-btn" class="button2" aria-label="Open Settings" title="Settings">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl w-full mx-auto px-4 py-8 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        <!-- Left: Wheel Area (7 Cols) -->
+        <section class="lg:col-span-7 flex flex-col items-center justify-center bg-slate-900/60 border border-slate-800/80 rounded-3xl p-6 md:p-8 backdrop-blur-md relative shadow-2xl">
+
+            <!-- Wheel Container -->
+            <div class="relative w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[440px] md:h-[440px] flex items-center justify-center my-4">
+                <!-- Pointer Arrow -->
+                <div class="absolute -top-4 z-20 w-8 h-10 bg-gradient-to-b from-rose-500 to-rose-600 clip-pointer drop-shadow-[0_4px_6px_rgba(244,63,94,0.4)] transition-transform duration-75" id="pointer"></div>
+
+                <!-- Canvas -->
+                <canvas id="wheelCanvas" width="500" height="500" class="w-full h-full cursor-pointer drop-shadow-2xl"></canvas>
+
+                <!-- Center Spin Button -->
+                <button id="spinCenterBtn" class="absolute z-10 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-600 text-white font-black text-lg tracking-wider shadow-xl shadow-purple-500/40 border-4 border-slate-950 flex flex-col items-center justify-center hover:scale-105 active:scale-95 transition-all duration-200 uppercase group">
+                    <span class="group-hover:tracking-widest transition-all">Spin</span>
+                </button>
+            </div>
+
+            <!-- Action Controls Under Wheel -->
+            <div class="flex items-center gap-4 w-full max-w-md mt-2">
+                <button id="spinBtn" class="flex-1 py-4 px-6 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold text-base tracking-wide shadow-lg shadow-indigo-500/25 hover:opacity-95 active:scale-[0.98] transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-play"></i> Spin Wheel
+                </button>
+                <button id="fullscreenBtn" class="w-14 py-4 rounded-2xl bg-slate-800 border border-slate-700/60 text-slate-300 hover:text-white hover:bg-slate-700 transition flex items-center justify-center text-lg" title="Fullscreen Wheel">
+                    <i class="fa-solid fa-expand"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Right: Word Management Panel (5 Cols) -->
+        <section class="lg:col-span-5 flex flex-col bg-slate-900/60 border border-slate-800/80 rounded-3xl p-6 backdrop-blur-md shadow-2xl h-full min-h-[580px]">
+
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+                <h2 class="text-base font-bold text-slate-200 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-indigo-400"></i> Entries Management
+                </h2>
+                <span id="itemCountBadge" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-500/25 text-indigo-300 border border-indigo-500/30">0 items</span>
+            </div>
+
+            <!-- Presets Row -->
+            <div class="mb-4">
+                <label class="text-xs font-medium text-slate-400 mb-2 block">Quick Presets</label>
+                <div class="flex flex-wrap gap-2" id="presetContainer">
+                    <button class="preset-btn text-xs px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-300 hover:bg-indigo-600 hover:text-white hover:border-indigo-500 transition" data-preset="eat">🍔 What to Eat?</button>
+                    <button class="preset-btn text-xs px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-300 hover:bg-indigo-600 hover:text-white hover:border-indigo-500 transition" data-preset="yesno">⚖️ Yes or No</button>
+                    <button class="preset-btn text-xs px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-300 hover:bg-indigo-600 hover:text-white hover:border-indigo-500 transition" data-preset="numbers">🔢 1 to 10</button>
+                    <button class="preset-btn text-xs px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-300 hover:bg-indigo-600 hover:text-white hover:border-indigo-500 transition" data-preset="truthdare">🎲 Truth or Dare</button>
+                </div>
+            </div>
+
+            <!-- Add Single Item Input -->
+            <form id="addItemForm" class="flex gap-2 mb-4">
+                <input type="text" id="newItemInput" placeholder="Add custom word or choice..." class="flex-1 bg-slate-950/80 border border-slate-700/80 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition shadow-inner">
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 rounded-xl font-medium text-sm transition shadow-md shadow-indigo-600/30">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </form>
+
+            <!-- Bulk Edit Toggle & Advanced Panel -->
+            <div class="mb-3 flex items-center justify-between">
+                <span class="text-xs font-medium text-slate-400">Current Choices (One per line)</span>
+                <div class="flex gap-2">
+                    <button id="shuffleBtn" class="text-xs text-slate-400 hover:text-slate-200 transition"><i class="fa-solid fa-shuffle mr-1"></i> Shuffle</button>
+                    <span class="text-slate-700">|</span>
+                    <button id="clearAllBtn" class="text-xs text-rose-400 hover:text-rose-300 transition"><i class="fa-solid fa-trash-can mr-1"></i> Clear All</button>
+                </div>
+            </div>
+
+            <!-- Scrollable Items List / Textarea Editor -->
+            <div class="flex-1 relative flex flex-col min-h-[220px] max-h-[300px]">
+                <textarea id="bulkEditor" class="w-full flex-1 bg-slate-950/90 border border-slate-800 rounded-2xl p-4 text-sm text-slate-200 font-mono resize-none focus:outline-none focus:border-indigo-500 transition shadow-inner leading-relaxed" placeholder="Type items here, one per line..."></textarea>
+            </div>
+
+            <p class="text-[11px] text-slate-500 mt-3 text-center">Changes in the text box update the roulette wheel instantly.</p>
+        </section>
+
+    </main>
+
+    <!-- Settings Popup Modal Overlay -->
+    <div id="settings-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200 dark:border-slate-700">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-gear text-blue-600"></i>
+                    <h3 class="font-bold text-lg">Hub Settings</h3>
+                </div>
+                <button id="close-modal" class="button2" title="Close Settings">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-sm">
+                <!-- Theme Mode -->
+                <div class="flex items-center justify-between py-2">
+                    <div>
+                        <p class="font-semibold">Quick Theme Toggle</p>
+                        <p class="text-xs text-slate-500">Switch between light and dark mode preferences.</p>
+                    </div>
+                    <button id="modal-theme-btn" class="theme-toggle-btn">Toggle Mode</button>
+                </div>
+
+                <!-- Custom Wallpaper Section -->
+                <div class="py-2 border-t border-slate-100 dark:border-slate-800 space-y-3">
+                    <div>
+                        <p class="font-semibold">Custom Background / Wallpaper</p>
+                        <p class="text-xs text-slate-500">Use a custom image link or upload a picture from your device.</p>
+                    </div>
+
+                    <!-- Image URL Option -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Image URL</label>
+                        <div class="flex gap-2">
+                            <input type="url" id="bg-url-input" placeholder="https://example.com/image.jpg" class="tax-input text-xs py-1.5" />
+                            <button id="apply-url-btn" class="px-3 py-1.5 text-xs font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Apply</button>
+                        </div>
+                    </div>
+
+                    <!-- Upload Local File Option -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 mb-1">Upload Local Image</label>
+                        <input type="file" id="bg-file-input" accept="image/*" class="text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-500/10 file:text-blue-600 hover:file:bg-blue-500/20 cursor-pointer" />
+                    </div>
+
+                    <div class="py-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <p class="font-semibold">Card Transparency</p>
+                            <span id="transparency-value" class="text-xs font-bold text-blue-600">65%</span>
+                        </div>
+                        <p class="text-xs text-slate-500">Adjust the opacity of cards when a wallpaper is active.</p>
+                        <input type="range" id="transparency-slider" min="0.1" max="1" step="0.05" value="0.65" class="w-full accent-blue-600 cursor-pointer" />
+                    </div>
+
+                    <!-- Reset Background to Default -->
+                    <div class="pt-1">
+                        <button id="reset-bg-btn" class="w-full py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                            <i class="fa-solid fa-rotate-left mr-1"></i> Reset to Default Color
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Local Storage Data -->
+                <div class="flex items-center justify-between py-2 border-t border-slate-100 dark:border-slate-800">
+                    <div>
+                        <p class="font-semibold">Local Storage Data</p>
+                        <p class="text-xs text-slate-500">Clear saved preferences and cache.</p>
+                    </div>
+                    <button id="clear-cache-btn" class="px-3 py-1.5 text-xs font-semibold bg-red-500/10 text-red-600 hover:bg-red-500 hover:text-white rounded-lg transition-colors">Clear Cache</button>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between py-2 border-t border-slate-100 dark:border-slate-800 mt-2">
+                <div>
+                    <p class="font-semibold">Hide Scrollbars</p>
+                    <p class="text-xs text-slate-500">Hide visual scrollbars across all tools.</p>
+                </div>
+                <button id="toggle-scrollbar-btn" class="theme-toggle-btn text-xs px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 font-semibold transition-all">Disabled</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Winner Modal Overlay -->
+    <div id="winnerModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl transform scale-95 transition-all duration-300" id="winnerModalContent">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 mx-auto flex items-center justify-center shadow-lg shadow-orange-500/30 mb-5 animate-bounce">
+                <i class="fa-solid fa-trophy text-2xl text-slate-950"></i>
+            </div>
+            <span class="text-xs font-bold uppercase tracking-widest text-indigo-400 block mb-1">We Have a Winner!</span>
+            <h3 id="winnerText" class="text-3xl font-black text-white mb-6 break-words px-2">Winner Name</h3>
+
+            <div class="flex gap-3">
+                <button id="removeWinnerBtn" class="flex-1 py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm transition border border-slate-700">
+                    Remove Item
+                </button>
+                <button id="closeModalBtn" class="flex-1 py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm transition shadow-lg shadow-indigo-600/30">
+                    Spin Again
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Use pc or wide screen for best experience</p>
+    </footer>
+
+    <!-- Universal Hub Controller & Wheel Logic -->
+    <script src="app.js"></script>
+    <script src="roulette.js"></script>
+</body>
+</html>
