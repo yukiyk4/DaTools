@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en" class="dark-mode">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DaICO Pro - Multi-Resolution Favicon Generator</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="Style.css" />
+        <link rel="stylesheet" href="daico.css" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet" />
+    </head>
+    <body class="dark-mode min-h-screen flex flex-col justify-between">
+        <!-- Global DaTools Header -->
+        <header>
+            <div class="header-container">
+                <div class="header-left">
+                    <div class="header-logo-box bg-gradient-to-br from-amber-500 to-orange-600 text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="header-title">DaICO Pro</h1>
+                        <p class="header-subtitle">Multi-Resolution Favicon Converter</p>
+                    </div>
+                </div>
+
+                <!-- Header Controls: Home, Settings, Theme Toggle -->
+                <div class="flex items-center gap-2">
+                    <a href="index.html" class="button2" title="Home">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                    </a>
+                    <button id="settings-btn" class="button2" title="Settings">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </button>
+                    <button id="theme-toggle" class="theme-toggle-btn">
+                        <span id="theme-icon">🌙</span>
+                        <span id="theme-text">Dark Mode</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Workspace Container -->
+        <main class="tax-main">
+            <div id="card-container" class="tax-card max-w-xl mx-auto space-y-6">
+                <!-- Tool Description Header -->
+                <div class="tax-header-text">
+                    <h2 class="tax-heading bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+                        Generate Crisp Favicons
+                    </h2>
+                    <p class="tax-desc">Convert PNG, JPG, or WebP images into standard multi-layer `.ico` packages.</p>
+                </div>
+
+                <!-- Upload Dropzone -->
+                <div id="ico-dropzone" class="ico-dropzone">
+                    <input type="file" id="ico-input" accept="image/png, image/jpeg, image/webp" class="hidden" />
+                    <div class="space-y-3">
+                        <div class="ico-icon-box">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                            </svg>
+                        </div>
+                        <p class="text-sm font-semibold">
+                            Drop image file here or <span class="text-amber-500 hover:underline">browse</span>
+                        </p>
+                        <p class="text-xs text-slate-400">Supports PNG, JPG, WebP (Transparent PNG recommended)</p>
+                    </div>
+                </div>
+
+                <!-- Editor Panel (Hidden by default) -->
+                <div id="ico-editor" class="hidden space-y-6">
+                    <!-- Image Preview Card -->
+                    <div class="flex items-center gap-4 p-4 tax-card rounded-xl">
+                        <img
+                            id="source-preview"
+                            class="w-16 h-16 object-contain rounded-lg p-1 border border-slate-700 bg-slate-950"
+                            alt="Source Preview" />
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-semibold truncate">Source Image Loaded</p>
+                            <p class="text-[11px] text-slate-400">Ready for multi-layer rendering</p>
+                        </div>
+                        <button id="change-img-btn" class="button2 !w-auto !px-4">Change</button>
+                    </div>
+
+                    <!-- Layer Resolution Preview Grid -->
+                    <div class="space-y-3">
+                        <label class="tax-label">Layer Preview Breakdown:</label>
+                        <div
+                            class="grid grid-cols-4 gap-2 p-3 bg-slate-950/60 border border-slate-800 rounded-xl text-center">
+                            <div>
+                                <canvas
+                                    id="prev-16"
+                                    class="w-8 h-8 mx-auto rounded bg-slate-900 border border-slate-700 image-pixelated"></canvas>
+                                <span class="text-[10px] text-slate-400">16px</span>
+                            </div>
+                            <div>
+                                <canvas
+                                    id="prev-32"
+                                    class="w-8 h-8 mx-auto rounded bg-slate-900 border border-slate-700 image-pixelated"></canvas>
+                                <span class="text-[10px] text-slate-400">32px</span>
+                            </div>
+                            <div>
+                                <canvas
+                                    id="prev-64"
+                                    class="w-8 h-8 mx-auto rounded bg-slate-900 border border-slate-700 image-pixelated"></canvas>
+                                <span class="text-[10px] text-slate-400">64px</span>
+                            </div>
+                            <div>
+                                <canvas
+                                    id="prev-256"
+                                    class="w-8 h-8 mx-auto rounded bg-slate-900 border border-slate-700 image-pixelated"></canvas>
+                                <span class="text-[10px] text-slate-400">256px</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Maximum Quality Tier Radio Options -->
+                    <div class="space-y-3">
+                        <label class="tax-label">Select Maximum Quality Tier:</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <label class="ico-radio-card">
+                                <input type="radio" name="ico-max-size" value="32" class="w-4 h-4 accent-amber-500" />
+                                <div>
+                                    <p class="font-semibold text-xs">Up to 32px</p>
+                                    <p class="text-[10px] text-slate-400">Standard Favicon (16px, 32px)</p>
+                                </div>
+                            </label>
+                            <label class="ico-radio-card">
+                                <input type="radio" name="ico-max-size" value="64" class="w-4 h-4 accent-amber-500" />
+                                <div>
+                                    <p class="font-semibold text-xs">Up to 64px</p>
+                                    <p class="text-[10px] text-slate-400">High-Res Desktop Icons</p>
+                                </div>
+                            </label>
+                            <label class="ico-radio-card">
+                                <input type="radio" name="ico-max-size" value="128" class="w-4 h-4 accent-amber-500" />
+                                <div>
+                                    <p class="font-semibold text-xs">Up to 128px</p>
+                                    <p class="text-[10px] text-slate-400">Retina & Mobile Icons</p>
+                                </div>
+                            </label>
+                            <label class="ico-radio-card active">
+                                <input
+                                    type="radio"
+                                    name="ico-max-size"
+                                    value="256"
+                                    class="w-4 h-4 accent-amber-500"
+                                    checked />
+                                <div>
+                                    <p class="font-semibold text-xs">Up to 256px (Recommended)</p>
+                                    <p class="text-[10px] text-slate-400">Full Windows Suite</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Generate Action Button -->
+                    <button id="generate-ico-btn" class="ico-process-btn">Generate & Pack .ico File</button>
+                </div>
+
+                <!-- Result Panel (Hidden by default) -->
+                <div id="result-panel" class="hidden space-y-4 text-center">
+                    <div class="p-6 bg-emerald-950/30 border border-emerald-800/50 rounded-xl space-y-2">
+                        <svg
+                            class="w-10 h-10 mx-auto text-emerald-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <h3 class="text-sm font-bold text-emerald-300">Favicon ICO Package Ready!</h3>
+                        <p class="text-xs text-slate-400">
+                            All milestone resolution layers bundled into `.ico` format.
+                        </p>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <a id="download-ico-btn" download="favicon.ico" class="ico-download-btn">
+                            Download favicon.ico
+                        </a>
+                        <button id="reset-ico-btn" class="button2 !w-auto !px-4">Convert Another</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Global DaTools Footer -->
+        <footer>
+            <p>&copy; 2026 DaTools Hub. Client-Side Favicon Converter.</p>
+        </footer>
+
+        <!-- Settings Modal Popup -->
+        <div id="settings-modal" class="modal-overlay hidden">
+            <div class="modal-card space-y-6">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-bold">Hub Settings</h3>
+                    <button id="close-modal" class="button2 !w-8 !h-8 text-sm">✕</button>
+                </div>
+
+                <div class="space-y-4 text-xs">
+                    <!-- Wallpaper Settings -->
+                    <div class="space-y-2">
+                        <label class="font-semibold block">Custom Wallpaper URL</label>
+                        <div class="flex gap-2">
+                            <input
+                                type="text"
+                                id="bg-url-input"
+                                placeholder="https://example.com/image.jpg"
+                                class="tax-input flex-1" />
+                            <button id="apply-url-btn" class="button2 !w-auto !px-3">Apply</button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="font-semibold block">Upload Background Image</label>
+                        <input type="file" id="bg-file-input" accept="image/*" class="tax-input text-[11px] py-1.5" />
+                    </div>
+
+                    <!-- Transparency Slider -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between font-semibold">
+                            <span>Card Transparency</span>
+                            <span id="transparency-value">65%</span>
+                        </div>
+                        <input
+                            type="range"
+                            id="transparency-slider"
+                            min="0.2"
+                            max="0.95"
+                            step="0.05"
+                            value="0.65"
+                            class="w-full accent-amber-500 cursor-pointer" />
+                    </div>
+
+                    <!-- Theme Toggle Button inside Modal -->
+                    <div class="pt-2 flex items-center justify-between border-t border-slate-700">
+                        <span class="font-semibold">Appearance Theme</span>
+                        <button id="modal-theme-btn" class="theme-toggle-btn">
+                            <span>Toggle Theme</span>
+                        </button>
+                    </div>
+
+                    <!-- Reset / Clear Cache -->
+                    <div class="pt-2 flex gap-2 border-t border-slate-700">
+                        <button id="reset-bg-btn" class="button2 !w-auto !px-3 text-red-400 hover:text-red-300">
+                            Reset Wallpaper
+                        </button>
+                        <button
+                            id="clear-cache-btn"
+                            class="button2 !w-auto !px-3 text-red-400 hover:text-red-300 flex-1">
+                            Clear Local Storage
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="daico.js"></script>
+    </body>
+</html>

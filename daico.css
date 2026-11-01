@@ -1,0 +1,234 @@
+/* ==========================================
+   DaICO Pro - Tool Specific Styles (Matched to Style.css)
+   ========================================== */
+
+/* Dropzone Styling */
+.ico-dropzone {
+    border: 2px dashed var(--border-color, #e2e8f0);
+    border-radius: 1.5rem;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background-color: var(--card-bg, #ffffff);
+}
+
+body.dark-mode .ico-dropzone {
+    background-color: var(--card-bg, #1e293b);
+    border-color: var(--border-color, #334155);
+}
+
+.ico-dropzone:hover {
+    border-color: #3b82f6;
+    background-color: rgba(59, 130, 246, 0.03);
+}
+
+.ico-dropzone.dragover {
+    border-color: #3b82f6 !important;
+    background-color: rgba(59, 130, 246, 0.08) !important;
+}
+
+.ico-icon-box {
+    width: 3.5rem;
+    height: 3.5rem;
+    margin: 0 auto 0.875rem auto;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, #f59e0b, #ea580c);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Quality Tier Option Cards */
+.ico-radio-card {
+    background-color: var(--bg-color, #f8fafc);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 0.875rem;
+    padding: 0.875rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+body.dark-mode .ico-radio-card {
+    background-color: rgba(15, 23, 42, 0.5);
+    border-color: var(--border-color, #334155);
+}
+
+.ico-radio-card:hover {
+    border-color: #3b82f6;
+}
+
+.ico-radio-card.active,
+.ico-radio-card:has(input[type="radio"]:checked) {
+    border-color: #3b82f6 !important;
+    background-color: rgba(59, 130, 246, 0.06) !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+}
+
+/* Action Buttons */
+.ico-process-btn {
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.ico-process-btn:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+}
+
+.ico-download-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex: 1;
+    padding: 0.75rem;
+    background-color: #059669;
+    color: #ffffff;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.3);
+}
+
+.ico-download-btn:hover {
+    background-color: #047857;
+    transform: translateY(-1px);
+}
+
+.image-pixelated {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+/* ==========================================
+   Settings Centered Modal Popup (Homepage Parity)
+   ========================================== */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 1rem;
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.hidden {
+    display: none;
+}
+
+.modal-card {
+    background-color: var(--card-bg, #ffffff);
+    color: var(--text-color, #1e293b);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    width: 100%;
+    max-width: 28rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    animation: modalScaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.dark-mode .modal-card {
+    background-color: var(--card-bg, #1e293b);
+    color: var(--text-color, #f8fafc);
+    border-color: var(--border-color, #334155);
+}
+
+@keyframes modalScaleUp {
+    0% {
+        transform: scale(0.92);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-card input[type="text"],
+.modal-card input[type="file"] {
+    width: 100%;
+    padding: 0.625rem 1rem;
+    background-color: var(--bg-color, #f8fafc);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--text-color, #1e293b);
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+body.dark-mode .modal-card input[type="text"],
+body.dark-mode .modal-card input[type="file"] {
+    background-color: var(--bg-color, #0f172a);
+    border-color: var(--border-color, #334155);
+    color: var(--text-color, #f8fafc);
+}
+
+.modal-card input[type="text"]:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* ==========================================
+   Glassmorphism Wallpaper Rules for DaICO
+   ========================================== */
+
+body.has-wallpaper .ico-dropzone {
+    background-color: rgba(15, 23, 42, var(--card-alpha, 0.65)) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+body.has-wallpaper .ico-radio-card {
+    background-color: rgba(15, 23, 42, var(--card-alpha, 0.65)) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+body.has-wallpaper .modal-card {
+    background-color: rgba(15, 23, 42, var(--card-alpha, 0.65)) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+    color: #ffffff !important;
+}
+
+body.has-wallpaper .modal-card input[type="text"],
+body.has-wallpaper .modal-card input[type="file"] {
+    background-color: rgba(15, 23, 42, calc(var(--card-alpha, 0.65) + 0.1)) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+}

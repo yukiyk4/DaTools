@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DaGIF Pro - DaTools Hub</title>
+        <!-- FontAwesome & Tailwind CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Global Hub Styles & Tool Specific Styles -->
+        <link rel="stylesheet" href="Style.css" />
+        <link rel="stylesheet" href="dagif.css" />
+    </head>
+    <body class="dark-mode flex flex-col min-h-screen">
+        <!-- Universal Header -->
+        <header>
+            <div class="header-container">
+                <div class="header-left">
+                    <a href="index.html" class="button2" title="Back to Hub">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+                    <div class="header-logo-box bg-purple-500/10 text-purple-600">
+                        <i class="fa-solid fa-film text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="header-title">DaGIF Pro</h1>
+                        <p class="header-subtitle">Client-side video & image GIF generator</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <!-- Settings Button -->
+                    <button id="settings-btn" class="button2" title="Settings">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+                    <span
+                        class="text-xs font-semibold px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-600 hidden sm:inline-block"
+                        >100% Client-Side</span
+                    >
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Workspace -->
+        <main class="dagif-main">
+            <div class="tax-card">
+                <!-- Tabs Navigation -->
+                <div class="flex gap-2 mb-6">
+                    <button
+                        class="tab-btn flex-1 py-3 px-4 rounded-xl font-semibold text-sm transition-all active"
+                        data-tab="video-tab">
+                        <i class="fa-solid fa-video mr-2"></i> Video to GIF
+                    </button>
+                    <button
+                        class="tab-btn flex-1 py-3 px-4 rounded-xl font-semibold text-sm transition-all"
+                        data-tab="images-tab">
+                        <i class="fa-solid fa-images mr-2"></i> Images to GIF
+                    </button>
+                </div>
+
+                <!-- Video to GIF Section -->
+                <section id="video-tab" class="tab-content active">
+                    <div class="dagif-drop-zone" id="video-dropzone">
+                        <div class="dagif-upload-icon">
+                            <i class="fa-solid fa-file-video"></i>
+                        </div>
+                        <p class="font-semibold text-sm">Drag & drop a video file (.mp4, .webm) or click to browse</p>
+                        <p class="text-xs text-slate-400 mt-1">Render clips instantly in your browser</p>
+                        <input type="file" id="video-input" accept="video/mp4, video/webm" hidden />
+                    </div>
+
+                    <div class="editor-panel hidden space-y-5" id="video-editor">
+                        <div
+                            class="preview-wrapper rounded-xl overflow-hidden border border-slate-700 bg-black/40 flex justify-center">
+                            <video id="video-preview" controls class="max-h-[350px] w-auto"></video>
+                        </div>
+
+                        <div class="tax-grid">
+                            <div class="tax-form-group">
+                                <label class="tax-label" for="start-time">Start Time (s):</label>
+                                <input type="number" id="start-time" class="tax-input" min="0" step="0.1" value="0" />
+                            </div>
+                            <div class="tax-form-group">
+                                <label class="tax-label" for="end-time">End Time (s):</label>
+                                <input type="number" id="end-time" class="tax-input" min="0.1" step="0.1" value="5" />
+                            </div>
+                            <div class="tax-form-group">
+                                <label class="tax-label" for="fps">FPS (Frames/sec):</label>
+                                <select id="fps" class="tax-input">
+                                    <option value="10">10 FPS (Smaller size)</option>
+                                    <option value="15" selected>15 FPS (Standard)</option>
+                                    <option value="24">24 FPS (Smooth)</option>
+                                </select>
+                            </div>
+                            <div class="tax-form-group">
+                                <label class="tax-label" for="width">Output Width (px):</label>
+                                <input type="number" id="width" class="tax-input" value="480" step="20" />
+                            </div>
+                        </div>
+
+                        <button
+                            class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-purple-600/20 flex items-center justify-center gap-2"
+                            id="convert-video-btn">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Generate GIF
+                        </button>
+                    </div>
+
+                    <!-- Add URL loader wrapper -->
+                    <div class="url-loader-box mt-3 flex gap-2">
+                        <input
+                            type="url"
+                            id="video-url-input"
+                            class="tax-input text-xs flex-1"
+                            placeholder="Or paste direct video URL (https://...)" />
+                        <button
+                            id="load-video-url-btn"
+                            class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-semibold">
+                            Load URL
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Images to GIF Section -->
+                <section id="images-tab" class="tab-content hidden">
+                    <div class="dagif-drop-zone" id="images-dropzone">
+                        <div class="dagif-upload-icon">
+                            <i class="fa-solid fa-images"></i>
+                        </div>
+                        <p class="font-semibold text-sm">
+                            Drag & drop multiple images (.png, .jpg, .webp) or click to browse
+                        </p>
+                        <p class="text-xs text-slate-400 mt-1">Combine frames into custom animated sequences</p>
+                        <input type="file" id="images-input" accept="image/*" multiple hidden />
+                    </div>
+
+                    <div class="editor-panel hidden space-y-5" id="images-editor">
+                        <div class="frame-list flex gap-3 overflow-x-auto pb-2" id="frame-list"></div>
+
+                        <div class="tax-grid">
+                            <div class="tax-form-group">
+                                <label class="tax-label" for="frame-delay">Frame Delay (ms):</label>
+                                <input
+                                    type="number"
+                                    id="frame-delay"
+                                    class="tax-input"
+                                    value="200"
+                                    step="50"
+                                    min="50" />
+                            </div>
+                            <div class="tax-form-group">
+                                <label class="tax-label" for="img-width">Output Width (px):</label>
+                                <input type="number" id="img-width" class="tax-input" value="500" step="20" />
+                            </div>
+                        </div>
+
+                        <button
+                            class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-purple-600/20 flex items-center justify-center gap-2"
+                            id="convert-images-btn">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Generate GIF
+                        </button>
+                    </div>
+
+                    <!-- Add Image URL loader wrapper -->
+                    <div class="url-loader-box mt-3 flex gap-2">
+                        <input
+                            type="url"
+                            id="image-url-input"
+                            class="tax-input text-xs flex-1"
+                            placeholder="Or paste direct image URL (https://...)" />
+                        <button
+                            id="load-image-url-btn"
+                            class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-semibold">
+                            Add Frame
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Progress & Result Panel -->
+                <div
+                    class="result-panel hidden mt-6 pt-6 border-t border-slate-700 text-center space-y-4"
+                    id="result-panel">
+                    <div class="status-box space-y-3" id="status-box">
+                        <p id="status-text" class="font-medium text-sm text-slate-400">Processing frames...</p>
+                        <progress
+                            id="gif-progress"
+                            value="0"
+                            max="100"
+                            class="w-full h-2 rounded-lg overflow-hidden accent-purple-600"></progress>
+                    </div>
+
+                    <div class="gif-preview-container hidden space-y-4" id="gif-preview-container">
+                        <h3 class="font-bold text-base">Result Preview</h3>
+                        <div class="flex justify-center bg-black/40 p-3 rounded-xl border border-slate-700">
+                            <img id="gif-result-img" class="max-h-[350px] rounded-lg shadow-md" alt="Generated GIF" />
+                        </div>
+                        <div class="flex gap-3 justify-center">
+                            <a
+                                id="download-btn"
+                                class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-emerald-600/20"
+                                download="DaGIF_Export.gif">
+                                <i class="fa-solid fa-download"></i> Download GIF
+                            </a>
+                            <button
+                                class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-xl transition-all flex items-center gap-2"
+                                id="reset-btn">
+                                <i class="fa-solid fa-rotate-right"></i> Start Over
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Settings Centered Modal -->
+        <div id="settings-modal" class="modal-overlay hidden">
+            <div class="modal-card">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-blue-500 text-xl"></i>
+                        <h3 class="font-bold text-lg">Hub Settings</h3>
+                    </div>
+                    <button id="close-modal" class="button2 !w-8 !h-8 text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Quick Theme Toggle -->
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-700">
+                        <div>
+                            <p class="font-medium text-sm">Theme Preference</p>
+                            <p class="text-xs text-slate-400">Switch between light and dark mode.</p>
+                        </div>
+                        <button id="modal-theme-btn" class="theme-toggle-btn">
+                            <span id="theme-icon">☀️</span>
+                            <span id="theme-text">Light Mode</span>
+                        </button>
+                    </div>
+
+                    <!-- Custom Background / Wallpaper -->
+                    <div class="space-y-3 pb-4 border-b border-slate-700">
+                        <div>
+                            <p class="font-medium text-sm">Custom Background / Wallpaper</p>
+                            <p class="text-xs text-slate-400">
+                                Set a custom background wallpaper URL or upload a file.
+                            </p>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <input
+                                type="text"
+                                id="bg-url-input"
+                                placeholder="Paste image URL here..."
+                                class="tax-input text-xs flex-1" />
+                            <button
+                                id="apply-url-btn"
+                                class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold">
+                                Apply
+                            </button>
+                        </div>
+
+                        <div class="flex items-center justify-between gap-2">
+                            <label
+                                class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-xs font-semibold cursor-pointer flex items-center gap-1.5">
+                                <i class="fa-solid fa-upload"></i> Upload Image
+                                <input type="file" id="bg-file-input" accept="image/*" class="hidden" />
+                            </label>
+
+                            <button id="reset-bg-btn" class="text-xs text-red-400 hover:underline">
+                                Reset Wallpaper
+                            </button>
+                        </div>
+
+                        <!-- Card Transparency Slider -->
+                        <div class="pt-2">
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-slate-400">Card Transparency</span>
+                                <span id="transparency-value" class="font-bold text-blue-400">65%</span>
+                            </div>
+                            <input
+                                type="range"
+                                id="transparency-slider"
+                                min="0.1"
+                                max="1"
+                                step="0.05"
+                                value="0.65"
+                                class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+                        </div>
+                    </div>
+
+                    <!-- Scrollbar Toggle -->
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-700">
+                        <div>
+                            <p class="font-medium text-sm">Hide Scrollbars</p>
+                            <p class="text-xs text-slate-400">
+                                Hide visual scrollbars while keeping scroll functionality active.
+                            </p>
+                        </div>
+                        <button
+                            id="toggle-scrollbar-btn"
+                            class="px-3 py-1.5 text-xs font-semibold rounded-xl border border-slate-700 transition-all">
+                            Disabled
+                        </button>
+                    </div>
+
+                    <!-- Local Storage Data -->
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-medium text-sm">Local Storage Data</p>
+                            <p class="text-xs text-slate-400">Clear all saved preferences and reset hub.</p>
+                        </div>
+                        <button
+                            id="clear-cache-btn"
+                            class="px-3 py-1.5 bg-red-500/10 text-red-500 hover:bg-red-500/20 rounded-xl text-xs font-semibold">
+                            Clear Cache
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Universal Footer -->
+        <footer>
+            <p>DaTools Hub &bull; 100% Client-Side Utility Suite</p>
+        </footer>
+
+        <!-- Script Libraries -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
+        <script src="app.js"></script>
+        <script src="dagif.js"></script>
+    </body>
+</html>
