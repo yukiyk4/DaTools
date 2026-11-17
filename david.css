@@ -1,0 +1,117 @@
+/* ==========================================
+   DaVid Pro Specific Styles
+   ========================================== */
+
+.david-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem;
+    max-width: 52rem;
+    margin: 0 auto;
+    width: 100%;
+    justify-content: center;
+}
+
+.david-drop-zone {
+    background-color: var(--card-bg);
+    border: 2px dashed var(--border-color);
+    border-radius: 1.25rem;
+    padding: 3rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.david-drop-zone:hover,
+.david-drop-zone.drag-over {
+    border-color: #0284c7;
+    background-color: rgba(2, 132, 199, 0.05);
+}
+
+.david-upload-icon {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1rem auto;
+    border-radius: 1rem;
+    background-color: rgba(2, 132, 199, 0.12);
+    color: #0ea5e9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+}
+
+.preview-mode-btn {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 0.65rem;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--subtitle-color);
+    transition: all 0.2s ease;
+}
+
+.preview-mode-btn:hover {
+    border-color: #0ea5e9;
+    color: var(--text-color);
+}
+
+.preview-mode-btn.active {
+    background-color: #0284c7;
+    border-color: #0284c7;
+    color: #ffffff;
+}
+
+.tool-chip-btn {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 0.65rem;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    transition: all 0.2s ease;
+}
+
+.tool-chip-btn:hover {
+    border-color: #0ea5e9;
+}
+
+.tool-chip-btn.active-chip {
+    background-color: rgba(14, 165, 233, 0.15);
+    border-color: #0ea5e9;
+    color: #38bdf8;
+}
+
+/* Glassmorphism Wallpaper Overrides */
+body.has-wallpaper .david-drop-zone {
+    background-color: rgba(15, 23, 42, calc(var(--card-alpha) + 0.05)) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+body.has-wallpaper .editor-panel {
+    background-color: transparent !important;
+}
+
+/* ==========================================
+   Tab Navigation Styles for DaVid Pro
+   ========================================== */
+.tab-btn {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--subtitle-color);
+}
+
+.tab-btn:hover {
+    color: var(--text-color);
+    border-color: #0ea5e9;
+}
+
+.tab-btn.active {
+    background-color: #0284c7;
+    color: #ffffff;
+    border-color: #0284c7;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+}

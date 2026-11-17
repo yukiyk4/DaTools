@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DaVid Pro - DaTools Hub</title>
+        <!-- FontAwesome & Tailwind CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Global Hub Styles & Tool Specific Styles -->
+        <link rel="stylesheet" href="Style.css" />
+        <link rel="stylesheet" href="david.css" />
+    </head>
+    <body class="dark-mode flex flex-col min-h-screen">
+        <!-- Universal Header -->
+        <header>
+            <div class="header-container">
+                <div class="header-left">
+                    <a href="index.html" class="button2" title="Back to Hub">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+                    <div class="header-logo-box bg-sky-500/10 text-sky-500">
+                        <i class="fa-solid fa-expand text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="header-title">DaVid Pro</h1>
+                        <p class="header-subtitle">Client-side video & image resizer, cropper & optimizer</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="settings-btn" class="button2" title="Settings">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+                    <span
+                        class="text-xs font-semibold px-2.5 py-1 rounded-full bg-sky-500/10 text-sky-500 hidden sm:inline-block"
+                        >100% Client-Side</span
+                    >
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Workspace -->
+        <main class="david-main">
+            <div class="tax-card">
+                <!-- Tabs Navigation -->
+                <div class="flex gap-2 mb-6">
+                    <button
+                        class="tab-btn flex-1 py-3 px-4 rounded-xl font-semibold text-sm transition-all active"
+                        data-tab="video-tab">
+                        <i class="fa-solid fa-video mr-2"></i> Video Resizer
+                    </button>
+                    <button
+                        class="tab-btn flex-1 py-3 px-4 rounded-xl font-semibold text-sm transition-all"
+                        data-tab="image-tab">
+                        <i class="fa-solid fa-image mr-2"></i> Image Resizer
+                    </button>
+                </div>
+
+                <!-- ================= VIDEO TAB ================= -->
+                <section id="video-tab" class="tab-content active">
+                    <!-- Dropzone -->
+                    <div class="david-drop-zone" id="video-dropzone">
+                        <div class="david-upload-icon">
+                            <i class="fa-solid fa-photo-film"></i>
+                        </div>
+                        <p class="font-semibold text-sm">
+                            Drag & drop a video file (.mp4, .webm, .mov) or click to browse
+                        </p>
+                        <p class="text-xs text-slate-400 mt-1">
+                            Resize resolution, change aspect ratio, trim & compress locally
+                        </p>
+                        <input type="file" id="video-input" accept="video/*" hidden />
+                    </div>
+
+                    <!-- URL Loader -->
+                    <div id="url-loader-section" class="url-loader-box mt-3 flex gap-2">
+                        <input
+                            type="url"
+                            id="video-url-input"
+                            class="tax-input text-xs flex-1"
+                            placeholder="Or paste direct CORS-enabled video URL (https://...)" />
+                        <button
+                            id="load-video-url-btn"
+                            class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-semibold transition-colors">
+                            Load URL
+                        </button>
+                    </div>
+
+                    <!-- Editor Panel -->
+                    <div class="editor-panel hidden space-y-5" id="video-editor">
+                        <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                            <div class="flex items-center gap-2">
+                                <span
+                                    class="px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700 font-medium">
+                                    Original: <strong id="orig-res-badge" class="text-slate-200">-- x --</strong>
+                                </span>
+                                <i class="fa-solid fa-arrow-right text-slate-500"></i>
+                                <span
+                                    class="px-2.5 py-1 rounded-lg bg-sky-500/10 border border-sky-500/30 text-sky-400 font-medium">
+                                    Output: <strong id="target-res-badge">-- x --</strong>
+                                </span>
+                            </div>
+                            <button id="change-video-btn" class="text-xs text-slate-400 hover:text-sky-400 underline">
+                                Change Video
+                            </button>
+                        </div>
+
+                        <!-- Preview Tabs -->
+                        <div class="space-y-2">
+                            <div class="flex gap-2">
+                                <button type="button" class="preview-mode-btn active" data-mode="source">
+                                    <i class="fa-solid fa-play mr-1.5"></i> Source Video
+                                </button>
+                                <button type="button" class="preview-mode-btn" data-mode="framing">
+                                    <i class="fa-solid fa-crop-simple mr-1.5"></i> Live Framing Preview
+                                </button>
+                            </div>
+
+                            <div
+                                class="preview-wrapper rounded-xl overflow-hidden border border-slate-700 bg-black/60 flex justify-center items-center min-h-[240px] relative">
+                                <video id="video-preview" controls class="max-h-[340px] w-auto"></video>
+                                <canvas id="framing-canvas" class="hidden max-h-[340px] w-auto"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Resolution & Aspect Ratio Section -->
+                        <div class="p-4 rounded-xl border border-slate-700/70 bg-slate-900/30 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400">
+                                    <i class="fa-solid fa-maximize mr-1.5"></i> Resolution & Framing
+                                </h3>
+                                <label class="flex items-center gap-1.5 text-xs cursor-pointer select-none">
+                                    <input type="checkbox" id="lock-aspect" checked class="accent-sky-500 rounded" />
+                                    <span>Lock Aspect Ratio</span>
+                                </label>
+                            </div>
+
+                            <div class="tax-grid">
+                                <div class="tax-form-group">
+                                    <label class="tax-label" for="res-preset">Resolution Preset:</label>
+                                    <select id="res-preset" class="tax-input">
+                                        <option value="custom">Custom Dimensions</option>
+                                        <option value="1080p">1080p Full HD (1920×1080)</option>
+                                        <option value="720p" selected>720p HD (1280×720)</option>
+                                        <option value="480p">480p SD (854×480)</option>
+                                        <option value="360p">360p Web (640×360)</option>
+                                        <option value="shorts">TikTok / Shorts 9:16 (1080×1920)</option>
+                                        <option value="square">Instagram Square 1:1 (1080×1080)</option>
+                                    </select>
+                                </div>
+
+                                <div class="tax-form-group">
+                                    <label class="tax-label" for="fit-mode">Fit / Crop Mode:</label>
+                                    <select id="fit-mode" class="tax-input">
+                                        <option value="contain" selected>Fit (Letterbox / Black Bars)</option>
+                                        <option value="cover">Fill (Center Crop)</option>
+                                        <option value="stretch">Stretch to Exact Size</option>
+                                    </select>
+                                </div>
+
+                                <div class="tax-form-group">
+                                    <label class="tax-label" for="out-width">Width (px):</label>
+                                    <input
+                                        type="number"
+                                        id="out-width"
+                                        class="tax-input"
+                                        min="16"
+                                        max="3840"
+                                        step="2"
+                                        value="1280" />
+                                </div>
+
+                                <div class="tax-form-group">
+                                    <label class="tax-label" for="out-height">Height (px):</label>
+                                    <input
+                                        type="number"
+                                        id="out-height"
+                                        class="tax-input"
+                                        min="16"
+                                        max="3840"
+                                        step="2"
+                                        value="720" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Transform, Trim & Encoding Section -->
+                        <div class="p-4 rounded-xl border border-slate-700/70 bg-slate-900/30 space-y-4">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400">
+                                <i class="fa-solid fa-sliders mr-1.5"></i> Trim, Transform & Export Quality
+                            </h3>
+
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" id="rotate-btn" class="tool-chip-btn">
+                                    <i class="fa-solid fa-rotate-right mr-1.5"></i> Rotate:
+                                    <span id="rotate-val">0°</span>
+                                </button>
+                                <button type="button" id="flip-h-btn" class="tool-chip-btn">
+                                    <i class="fa-solid fa-left-right mr-1.5"></i> Flip H
+                                </button>
+                                <button type="button" id="flip-v-btn" class="tool-chip-btn">
+                                    <i class="fa-solid fa-up-down mr-1.5"></i> Flip V
+                                </button>
+                                <button type="button" id="mute-audio-btn" class="tool-chip-btn">
+                                    <i class="fa-solid fa-volume-high mr-1.5"></i> <span>Keep Audio</span>
+                                </button>
+                            </div>
+
+                            <div class="tax-grid">
+                                <div class="tax-form-group">
+                                    <div class="flex justify-between items-center">
+                                        <label class="tax-label" for="start-time">Start Time (s):</label>
+                                        <button
+                                            type="button"
+                                            id="set-start-now"
+                                            class="text-[11px] text-sky-400 hover:underline">
+                                            Set Current
+                                        </button>
+                                    </div>
+                                    <input
+                                        type="number"
+                                        id="start-time"
+                                        class="tax-input"
+                                        min="0"
+                                        step="0.1"
+                                        value="0" />
+                                </div>
+
+                                <div class="tax-form-group">
+                                    <div class="flex justify-between items-center">
+                                        <label class="tax-label" for="end-time">End Time (s):</label>
+                                        <button
+                                            type="button"
+                                            id="set-end-now"
+                                            class="text-[11px] text-sky-400 hover:underline">
+                                            Set Current
+                                        </button>
+                                    </div>
+                                    <input
+                                        type="number"
+                                        id="end-time"
+                                        class="tax-input"
+                                        min="0.1"
+                                        step="0.1"
+                                        value="5" />
+                                </div>
+
+                                <div class="tax-form-group">
+                                    <label class="tax-label" for="target-fps">Frame Rate (FPS):</label>
+                                    <select id="target-fps" class="tax-input">
+                                        <option value="24">24 FPS (Cinematic / Smaller)</option>
+                                        <option value="30" selected>30 FPS (Standard)</option>
+                                        <option value="60">60 FPS (Smooth)</option>
+                                    </select>
+                                </div>
+
+                                <div class="tax-form-group">
+                                    <label class="tax-label" for="bitrate-select">Video Bitrate / Quality:</label>
+                                    <select id="bitrate-select" class="tax-input">
+                                        <option value="8000000">High Quality (8 Mbps)</option>
+                                        <option value="4000000" selected>Balanced (4 Mbps)</option>
+                                        <option value="1500000">Compressed / Small (1.5 Mbps)</option>
+                                        <option value="800000">Ultra Lite (800 Kbps)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Render Button -->
+                        <button
+                            class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-sky-600/20 flex items-center justify-center gap-2"
+                            id="render-video-btn">
+                            <i class="fa-solid fa-clapperboard"></i> Resize & Export Video
+                        </button>
+                    </div>
+
+                    <!-- Video Progress & Result Panel -->
+                    <div
+                        class="result-panel hidden mt-6 pt-6 border-t border-slate-700 text-center space-y-4"
+                        id="video-result-panel">
+                        <div class="status-box space-y-3" id="video-status-box">
+                            <div class="flex items-center justify-between text-xs text-slate-400">
+                                <span id="video-status-text">Processing video stream in real-time...</span>
+                                <span id="progress-percent" class="font-bold text-sky-400">0%</span>
+                            </div>
+                            <progress
+                                id="video-progress"
+                                value="0"
+                                max="100"
+                                class="w-full h-2 rounded-lg overflow-hidden accent-sky-500"></progress>
+                            <button
+                                type="button"
+                                id="cancel-render-btn"
+                                class="px-3 py-1 text-xs bg-red-500/10 text-red-400 hover:bg-red-500/20 rounded-lg">
+                                Cancel
+                            </button>
+                        </div>
+
+                        <div class="video-preview-container hidden space-y-4" id="video-result-container">
+                            <div class="flex items-center justify-center gap-3">
+                                <h3 class="font-bold text-base">Export Complete</h3>
+                                <span
+                                    id="output-file-size"
+                                    class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-semibold">
+                                    -- MB
+                                </span>
+                            </div>
+                            <div class="flex justify-center bg-black/50 p-3 rounded-xl border border-slate-700">
+                                <video
+                                    id="video-result-player"
+                                    controls
+                                    class="max-h-[350px] rounded-lg shadow-md"></video>
+                            </div>
+                            <div class="flex gap-3 justify-center">
+                                <a
+                                    id="download-btn"
+                                    class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-emerald-600/20"
+                                    download="DaVid_Resized.webm">
+                                    <i class="fa-solid fa-download"></i> Download Video
+                                </a>
+                                <button
+                                    class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-xl transition-all flex items-center gap-2"
+                                    id="reset-btn">
+                                    <i class="fa-solid fa-rotate-right"></i> Start Over
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= IMAGE TAB ================= -->
+                <section id="image-tab" class="tab-content hidden">
+                    <!-- Image Dropzone -->
+                    <div class="david-drop-zone" id="image-dropzone">
+                        <div class="david-upload-icon">
+                            <i class="fa-solid fa-image"></i>
+                        </div>
+                        <p class="font-semibold text-sm">Drag & drop an image (.png, .jpg, .webp) or click to browse</p>
+                        <p class="text-xs text-slate-400 mt-1">Resize dimensions, change format & compress locally</p>
+                        <input type="file" id="image-input" accept="image/*" hidden />
+                    </div>
+
+                    <!-- Image Editor Panel -->
+                    <div class="editor-panel hidden space-y-5" id="image-editor">
+                        <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                            <div class="flex items-center gap-2">
+                                <span
+                                    class="px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700 font-medium">
+                                    Original: <strong id="img-orig-res" class="text-slate-200">-- x --</strong>
+                                </span>
+                                <i class="fa-solid fa-arrow-right text-slate-500"></i>
+                                <span
+                                    class="px-2.5 py-1 rounded-lg bg-sky-500/10 border border-sky-500/30 text-sky-400 font-medium">
+                                    Output: <strong id="img-target-res">-- x --</strong>
+                                </span>
+                            </div>
+                            <button id="change-image-btn" class="text-xs text-slate-400 hover:text-sky-400 underline">
+                                Change Image
+                            </button>
+                        </div>
+
+                        <!-- Image Preview Box -->
+                        <div
+                            class="preview-wrapper rounded-xl overflow-hidden border border-slate-700 bg-black/60 flex justify-center items-center min-h-[240px] p-2">
+                            <img
+                                id="image-preview-element"
+                                class="max-h-[340px] w-auto object-contain rounded-lg"
+                                alt="Preview" />
+                        </div>
+
+                        <!-- Image Dimensions & Scale Toolbar -->
+                        <div class="p-4 rounded-xl border border-slate-700/70 bg-slate-900/30 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400">
+                                    <i class="fa-solid fa-maximize mr-1.5"></i> Image Scale & Format
+                                </h3>
+                                <label class="flex items-center gap-1.5 text-xs cursor-pointer select-none">
+                                    <input
+                                        type="checkbox"
+                                        id="img-lock-aspect"
+                                        checked
+                                        class="accent-sky-500 rounded" />
+                                    <span>Lock Aspect Ratio</span>
+                                </label>
+                            </div>
+
+                            <div class="tax-grid">
+                                <div class="tax-form-group">
+                                    <label class="tax-label" for="img-res-preset">Resolution Preset:</label>
+                                    <select id="img-res-preset" class="tax-input">
+                                        <option value="custom" selected>Custom Dimensions</option>
+                                        <option value="1080p">1080p Full HD (1920×1080)</option>
+                                        <option value="720p">720p HD (1280×720)</option>
+                                        <option value="480p">480p SD (854×480)</option>
+                                        <option value="square">Instagram Square (1080×1080)</option>
+                                        <option value="story">Stories / Shorts (1080×1920)</option>
+                                    </select>
+                                </div>
+
+                                <div class="tax-form-group">
+                                    <label class="tax-label" for="img-format">Output Format:</label>
+                                    <select id="img-format" class="tax-input">
+                                        <option value="image/jpeg">JPEG (Standard Photo)</option>
+                                        <option value="image/png">PNG (Lossless / Transparency)</option>
+                                        <option value="image/webp" selected>WEBP (Optimized / Modern)</option>
+                                    </select>
+                                </div>
+
+                                <div class="tax-form-group">
+                                    <label class="tax-label" for="img-width">Width (px):</label>
+                                    <input
+                                        type="number"
+                                        id="img-width"
+                                        class="tax-input"
+                                        min="1"
+                                        max="10000"
+                                        value="800" />
+                                </div>
+
+                                <div class="tax-form-group">
+                                    <label class="tax-label" for="img-height">Height (px):</label>
+                                    <input
+                                        type="number"
+                                        id="img-height"
+                                        class="tax-input"
+                                        min="1"
+                                        max="10000"
+                                        value="600" />
+                                </div>
+
+                                <div class="tax-form-group sm:col-span-2">
+                                    <label class="tax-label" for="img-quality">Quality (JPEG / WEBP):</label>
+                                    <select id="img-quality" class="tax-input">
+                                        <option value="0.95">High Quality (95%)</option>
+                                        <option value="0.85" selected>Balanced (85%)</option>
+                                        <option value="0.70">Compressed (70%)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Render Button -->
+                        <button
+                            class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-sky-600/20 flex items-center justify-center gap-2"
+                            id="render-image-btn">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Resize & Export Image
+                        </button>
+                    </div>
+
+                    <!-- Image Result Panel -->
+                    <div
+                        class="result-panel hidden mt-6 pt-6 border-t border-slate-700 text-center space-y-4"
+                        id="image-result-panel">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-center gap-3">
+                                <h3 class="font-bold text-base">Image Ready</h3>
+                                <span
+                                    id="img-output-size"
+                                    class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-semibold">
+                                    -- KB
+                                </span>
+                            </div>
+                            <div class="flex justify-center bg-black/50 p-3 rounded-xl border border-slate-700">
+                                <img
+                                    id="image-result-preview"
+                                    class="max-h-[350px] rounded-lg shadow-md object-contain"
+                                    alt="Resized Result" />
+                            </div>
+                            <div class="flex gap-3 justify-center">
+                                <a
+                                    id="img-download-btn"
+                                    class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-emerald-600/20"
+                                    download="DaVid_Resized.webp">
+                                    <i class="fa-solid fa-download"></i> Download Image
+                                </a>
+                                <button
+                                    class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-xl transition-all flex items-center gap-2"
+                                    id="img-reset-btn">
+                                    <i class="fa-solid fa-rotate-right"></i> Start Over
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Settings Centered Modal -->
+        <div id="settings-modal" class="modal-overlay hidden">
+            <div class="modal-card">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-blue-500 text-xl"></i>
+                        <h3 class="font-bold text-lg">Hub Settings</h3>
+                    </div>
+                    <button id="close-modal" class="button2 !w-8 !h-8 text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-700">
+                        <div>
+                            <p class="font-medium text-sm">Theme Preference</p>
+                            <p class="text-xs text-slate-400">Switch between light and dark mode.</p>
+                        </div>
+                        <button id="modal-theme-btn" class="theme-toggle-btn">
+                            <span id="theme-icon">☀️</span>
+                            <span id="theme-text">Light Mode</span>
+                        </button>
+                    </div>
+
+                    <div class="space-y-3 pb-4 border-b border-slate-700">
+                        <div>
+                            <p class="font-medium text-sm">Custom Background / Wallpaper</p>
+                            <p class="text-xs text-slate-400">
+                                Set a custom background wallpaper URL or upload a file.
+                            </p>
+                        </div>
+                        <div class="flex gap-2">
+                            <input
+                                type="text"
+                                id="bg-url-input"
+                                placeholder="Paste image URL here..."
+                                class="tax-input text-xs flex-1" />
+                            <button
+                                id="apply-url-btn"
+                                class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold">
+                                Apply
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <label
+                                class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-xs font-semibold cursor-pointer flex items-center gap-1.5">
+                                <i class="fa-solid fa-upload"></i> Upload Image
+                                <input type="file" id="bg-file-input" accept="image/*" class="hidden" />
+                            </label>
+                            <button id="reset-bg-btn" class="text-xs text-red-400 hover:underline">
+                                Reset Wallpaper
+                            </button>
+                        </div>
+                        <div class="pt-2">
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-slate-400">Card Transparency</span>
+                                <span id="transparency-value" class="font-bold text-blue-400">65%</span>
+                            </div>
+                            <input
+                                type="range"
+                                id="transparency-slider"
+                                min="0.1"
+                                max="1"
+                                step="0.05"
+                                value="0.65"
+                                class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-700">
+                        <div>
+                            <p class="font-medium text-sm">Hide Scrollbars</p>
+                            <p class="text-xs text-slate-400">
+                                Hide visual scrollbars while keeping scroll functionality active.
+                            </p>
+                        </div>
+                        <button
+                            id="toggle-scrollbar-btn"
+                            class="px-3 py-1.5 text-xs font-semibold rounded-xl border border-slate-700 transition-all">
+                            Disabled
+                        </button>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-medium text-sm">Local Storage Data</p>
+                            <p class="text-xs text-slate-400">Clear all saved preferences and reset hub.</p>
+                        </div>
+                        <button
+                            id="clear-cache-btn"
+                            class="px-3 py-1.5 bg-red-500/10 text-red-500 hover:bg-red-500/20 rounded-xl text-xs font-semibold">
+                            Clear Cache
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Universal Footer -->
+        <footer>
+            <p>DaTools Hub &bull; 100% Client-Side Utility Suite</p>
+        </footer>
+
+        <script src="app.js"></script>
+        <script src="david.js"></script>
+    </body>
+</html>

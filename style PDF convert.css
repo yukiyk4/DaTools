@@ -40,12 +40,10 @@ footer {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Force main container to inherit background color in dark mode */
 body.dark-mode main {
     background-color: var(--bg-color);
 }
 
-/* Central card styling for standard dark mode */
 body.dark-mode .bg-white,
 body.dark-mode #card-container {
     background-color: var(--card-bg) !important;
@@ -59,13 +57,6 @@ body.dark-mode #app-title {
 
 body.dark-mode #main-desc {
     color: var(--subtitle-color) !important;
-}
-
-body.dark-mode select,
-body.dark-mode textarea,
-body.dark-mode #preview-box-inner {
-    background-color: #0f172a !important;
-    border-color: var(--border-color) !important;
 }
 
 .dragover {
@@ -118,14 +109,12 @@ body.dark-mode .button2:hover {
     background-color: #475569;
 }
 
-/* Shadow fix for dark mode */
 body.dark-mode .shadow-xl,
 body.dark-mode .shadow-2xl,
 body.dark-mode .shadow-lg {
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* Glassmorphism adjustment for Browser Secure badge */
 body.has-wallpaper .bg-emerald-50 {
     background-color: rgba(16, 185, 129, 0.15) !important;
     border-color: rgba(16, 185, 129, 0.3) !important;
@@ -136,7 +125,6 @@ body.has-wallpaper .bg-emerald-50 {
    DocToPDF Pro - Glassmorphism & Wallpaper Rules
    ========================================== */
 
-/* 1. Force Header & Footer Glassmorphism */
 body.has-wallpaper header,
 body.has-wallpaper footer,
 body.has-wallpaper.dark-mode header,
@@ -147,7 +135,6 @@ body.has-wallpaper.dark-mode footer {
     border-color: rgba(255, 255, 255, 0.15) !important;
 }
 
-/* 2. Strip background from body and layout wrappers when wallpaper is active */
 body.has-wallpaper,
 body.has-wallpaper main,
 body.has-wallpaper.dark-mode,
@@ -155,7 +142,6 @@ body.has-wallpaper.dark-mode main {
     background-color: transparent !important;
 }
 
-/* 3. Central Card Glassmorphism */
 body.has-wallpaper #card-container,
 body.has-wallpaper.dark-mode #card-container {
     background-color: rgba(15, 23, 42, var(--card-alpha)) !important;
@@ -165,7 +151,6 @@ body.has-wallpaper.dark-mode #card-container {
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
 }
 
-/* 4. Text Contrast Adjustments */
 body.has-wallpaper header *,
 body.has-wallpaper footer *,
 body.has-wallpaper #card-container h2,
@@ -181,9 +166,57 @@ body.has-wallpaper #main-desc {
     color: #cbd5e1 !important;
 }
 
-/* 5. Inner Preview / Upload Box Glassmorphism */
-body.has-wallpaper #preview-box-inner,
-body.has-wallpaper.dark-mode #preview-box-inner {
-    background-color: rgba(15, 23, 42, calc(var(--card-alpha) + 0.1)) !important;
+/* ==========================================
+   Fix Image Item Cards for Glassmorphism Wallpaper
+   ========================================== */
+body.has-wallpaper #imageListContainer > div {
+    background-color: rgba(15, 23, 42, calc(var(--card-alpha) + 0.05)) !important;
     border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+body.has-wallpaper #imageListContainer h4 {
+    color: #ffffff !important;
+}
+
+body.has-wallpaper #imageListContainer span {
+    color: #cbd5e1 !important;
+}
+
+body.has-wallpaper #imageListContainer button {
+    color: #cbd5e1 !important;
+}
+
+body.has-wallpaper #imageListContainer button:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+/* ==========================================
+   Fix Page Number Badge Contrast
+   ========================================== */
+#imageListContainer .page-num-badge {
+    background-color: #3b82f6 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+body.has-wallpaper #imageListContainer .page-num-badge {
+    background-color: rgba(59, 130, 246, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+/* ==========================================
+   Drag-and-Drop Reorder Styling
+   ========================================== */
+.dragging-card {
+    opacity: 0.45 !important;
+    transform: scale(0.98);
+    border-style: dashed !important;
+    border-color: #3b82f6 !important;
+}
+
+.drag-target-highlight {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.35) !important;
+    transform: translateY(-2px);
 }
