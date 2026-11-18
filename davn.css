@@ -1,0 +1,98 @@
+/* ==========================================
+   Visual Node-Graph Editor Styles
+   ========================================== */
+
+.vn-dot-grid {
+    background-color: #090d16;
+    background-image: radial-gradient(rgba(148, 163, 184, 0.18) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+.vn-node-box {
+    position: absolute;
+    width: 250px;
+    background-color: rgba(15, 23, 42, 0.92);
+    border: 1.5px solid #334155;
+    border-radius: 1rem;
+    box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(10px);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    cursor: grab;
+}
+
+.vn-node-box:active {
+    cursor: grabbing;
+}
+
+.vn-node-box.selected {
+    border-color: #a855f7;
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.25), 0 16px 32px -6px rgba(0, 0, 0, 0.8);
+}
+
+.vn-node-box.connect-target-ready {
+    border-color: #10b981;
+    cursor: pointer;
+    animation: pulseTarget 1.4s infinite;
+}
+
+@keyframes pulseTarget {
+    0%, 100% { box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3); }
+    50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.15); }
+}
+
+.vn-pin-out {
+    width: 14px;
+    height: 14px;
+    border-radius: 9999px;
+    background-color: #a855f7;
+    border: 2px solid #0f172a;
+    cursor: crosshair;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+    flex-shrink: 0;
+}
+
+.vn-pin-out:hover {
+    transform: scale(1.3);
+    background-color: #38bdf8;
+}
+
+.vn-wire-path {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    opacity: 0.85;
+}
+
+/* ==========================================
+   Visual Novel Character & Choice Styles
+   ========================================== */
+
+#vn-sprites img,
+#vn-sprites > div {
+    /* Ensures sprites extend behind the dialogue box overlay */
+    margin-bottom: -3rem;
+    filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.7));
+}
+
+.vn-choice-btn {
+    width: 100%;
+    max-width: 500px;
+    padding: 0.85rem 1.25rem;
+    background-color: rgba(15, 23, 42, 0.95);
+    border: 1.5px solid #334155;
+    border-radius: 1rem;
+    color: #f8fafc;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: left;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.vn-choice-btn:hover {
+    background-color: rgba(30, 41, 59, 1);
+    border-color: #a855f7;
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px -5px rgba(168, 85, 247, 0.25);
+}

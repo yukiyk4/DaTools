@@ -3,36 +3,25 @@
    ========================================== */
 
 :root {
-    --bg-color: #f8fafc;
-    --card-bg: #ffffff;
-    --text-color: #1e293b;
-    --subtitle-color: #64748b;
-    --border-color: #e2e8f0;
-    --card-alpha: 0.65;
-}
-
-body.dark-mode {
     --bg-color: #0f172a;
     --card-bg: #1e293b;
+    --header-bg: #1e293b;
     --text-color: #f8fafc;
     --subtitle-color: #94a3b8;
     --border-color: #334155;
-    background-color: var(--bg-color) !important;
-    color: var(--text-color) !important;
+    --card-alpha: 0.65;
 }
 
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: "Inter", sans-serif;
-    transition:
-        background-color 0.3s ease,
-        color 0.3s ease,
-        background-image 0.3s ease;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    font-family: 'Inter', sans-serif;
+}
+
+header,
+footer {
+    background-color: var(--header-bg);
+    border-color: var(--border-color);
 }
 
 /* ==========================================

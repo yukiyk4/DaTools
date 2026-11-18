@@ -3,16 +3,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const navButtons = document.querySelectorAll(".calc-nav-btn");
     const panels = document.querySelectorAll(".calc-panel");
 
+    function activatePanel(targetId) {
+        const targetPanel = document.getElementById(targetId);
+        if (!targetPanel) return;
+
+        navButtons.forEach((b) => {
+            b.classList.toggle("active", b.dataset.target === targetId);
+        });
+        panels.forEach((p) => p.classList.add("hidden"));
+        targetPanel.classList.remove("hidden");
+    }
+
     navButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
-            navButtons.forEach((b) => b.classList.remove("active"));
-            panels.forEach((p) => p.classList.add("hidden"));
-
-            btn.classList.add("active");
-            const targetId = btn.dataset.target;
-            document.getElementById(targetId).classList.remove("hidden");
+            activatePanel(btn.dataset.target);
         });
     });
+
+    // Support direct hash links (e.g., calc.html#tax-panel)
+    if (window.location.hash) {
+        const hashTarget = window.location.hash.substring(1);
+        activatePanel(hashTarget);
+    }
 
     // 1. Accounting: Margin & Markup Calculator
     const calcMarginBtn = document.getElementById("calc-margin-btn");
@@ -59,7 +71,113 @@ document.addEventListener("DOMContentLoaded", () => {
         resultBox.classList.remove("hidden");
     });
 
-    // 2. Coding: Number Base Converter
+    // 2. Tax & Bill Split Calculator (Merged from DaTax Pro)
+    const taxAmountInput = document.getElementById("tax-amount-input");
+    const taxQtyInput = document.getElementById("tax-qty-input");
+    const taxDiscountInput = document.getElementById("tax-discount-input");
+    const taxServiceInput = document.getElementById("tax-service-input");
+    const taxRateInput = document.getElementById("tax-rate-input");
+    const taxShippingInput = document.getElementById("tax-shipping-input");
+    const taxInclusiveToggle = document.getElementById("tax-inclusive-toggle");
+    const taxSplitInput = document.getElementById("tax-split-input");
+
+    const taxBaseSubtotal = document.getElementById("tax-base-subtotal");
+    const taxDiscountDisplay = document.getElementById("tax-discount-display");
+    const taxServiceDisplay = document.getElementById("tax-service-display");
+    const taxAmountDisplay = document.getElementById("tax-amount-display");
+    const taxShippingDisplay = document.getElementById("tax-shipping-display");
+    const taxGrandTotal = document.getElementById("tax-grand-total");
+    const taxSplitRow = document.getElementById("tax-split-row");
+    const taxSplitCount = document.getElementById("tax-split-count");
+    const taxPerPerson = document.getElementById("tax-per-person");
+    const taxResetBtn = document.getElementById("tax-reset-btn");
+
+    function calculateTax() {
+        const unitPrice = parseFloat(taxAmountInput.value) || 0;
+        const qty = parseInt(taxQtyInput.value) || 1;
+        const discountPercent = parseFloat(taxDiscountInput.value) || 0;
+        const servicePercent = parseFloat(taxServiceInput.value) || 0;
+        const taxPercent = parseFloat(taxRateInput.value) || 0;
+        const shippingFee = parseFloat(taxShippingInput.value) || 0;
+        const isInclusive = taxInclusiveToggle.checked;
+        const splitCount = parseInt(taxSplitInput.value) || 1;
+
+        // 1. Base Subtotal
+        const baseSubtotal = unitPrice * qty;
+
+        // 2. Discount
+        const discountAmount = baseSubtotal * (discountPercent / 100);
+        const subtotalAfterDiscount = baseSubtotal - discountAmount;
+
+        // 3. Service Charge
+        const serviceAmount = subtotalAfterDiscount * (servicePercent / 100);
+
+        // 4. Tax Calculation
+        let taxAmount = 0;
+        const taxableBase = subtotalAfterDiscount + serviceAmount;
+
+        if (isInclusive) {
+            const netAmount = taxableBase / (1 + taxPercent / 100);
+            taxAmount = taxableBase - netAmount;
+        } else {
+            taxAmount = taxableBase * (taxPercent / 100);
+        }
+
+        // 5. Grand Total
+        const grandTotal = isInclusive
+            ? taxableBase + shippingFee
+            : taxableBase + taxAmount + shippingFee;
+
+        // 6. Split Bill Calculation
+        const validSplit = splitCount > 0 ? splitCount : 1;
+        const perPersonTotal = grandTotal / validSplit;
+
+        // Update UI Displays
+        taxBaseSubtotal.textContent = `RM ${baseSubtotal.toFixed(2)}`;
+        taxDiscountDisplay.textContent = `-RM ${discountAmount.toFixed(2)}`;
+        taxServiceDisplay.textContent = `+RM ${serviceAmount.toFixed(2)}`;
+        taxAmountDisplay.textContent = `${isInclusive ? "(Inclusive) " : "+"}RM ${taxAmount.toFixed(2)}`;
+        taxShippingDisplay.textContent = `+RM ${shippingFee.toFixed(2)}`;
+        taxGrandTotal.textContent = `RM ${grandTotal.toFixed(2)}`;
+
+        if (validSplit > 1) {
+            taxSplitRow.classList.remove("hidden");
+            taxSplitCount.textContent = validSplit;
+            taxPerPerson.textContent = `RM ${perPersonTotal.toFixed(2)}`;
+        } else {
+            taxSplitRow.classList.add("hidden");
+        }
+    }
+
+    [
+        taxAmountInput,
+        taxQtyInput,
+        taxDiscountInput,
+        taxServiceInput,
+        taxRateInput,
+        taxShippingInput,
+        taxInclusiveToggle,
+        taxSplitInput
+    ].forEach((el) => {
+        el.addEventListener("input", calculateTax);
+        el.addEventListener("change", calculateTax);
+    });
+
+    taxResetBtn.addEventListener("click", () => {
+        taxAmountInput.value = "";
+        taxQtyInput.value = "1";
+        taxDiscountInput.value = "0";
+        taxServiceInput.value = "0";
+        taxRateInput.value = "6";
+        taxShippingInput.value = "0";
+        taxInclusiveToggle.checked = false;
+        taxSplitInput.value = "1";
+        calculateTax();
+    });
+
+    calculateTax();
+
+    // 3. Coding: Number Base Converter
     const calcBaseBtn = document.getElementById("calc-base-btn");
     calcBaseBtn.addEventListener("click", () => {
         const valStr = document.getElementById("code-base-input").value.trim();
@@ -84,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
         resultBox.classList.remove("hidden");
     });
 
-    // 2b. Coding: PX to REM Converter
+    // 3b. Coding: PX to REM Converter
     const calcRemBtn = document.getElementById("calc-rem-btn");
     calcRemBtn.addEventListener("click", () => {
         const px = parseFloat(document.getElementById("code-px").value);
@@ -101,7 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
         resultBox.classList.remove("hidden");
     });
 
-    // 3. Financial: Compound Interest Calculator
+    // 4. Financial: Compound Interest Calculator
     const calcCompoundBtn = document.getElementById("calc-compound-btn");
     calcCompoundBtn.addEventListener("click", () => {
         const principal = parseFloat(document.getElementById("fin-principal").value);
@@ -124,7 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
         resultBox.classList.remove("hidden");
     });
 
-    // 3b. Financial: Loan EMI Calculator
+    // 4b. Financial: Loan EMI Calculator
     const calcLoanBtn = document.getElementById("calc-loan-btn");
     calcLoanBtn.addEventListener("click", () => {
         const loanAmount = parseFloat(document.getElementById("loan-amount").value);
@@ -297,7 +415,6 @@ exportStatementPdfBtn.addEventListener("click", () => {
         totalDr += entry.debit;
         totalCr += entry.credit;
 
-        // Calculate Net balances (Debit increases Asset/Expense, Credit increases Rev/Liab/Equity)
         let netBalance =
             entry.type === "Asset" || entry.type === "Expense"
                 ? entry.debit - entry.credit
@@ -411,8 +528,6 @@ exportStatementPdfBtn.addEventListener("click", () => {
     printWindow.document.close();
 });
 
-// Add inside document.addEventListener("DOMContentLoaded", () => { ... }) in calc.js
-
 // Loan Amortization State
 let amortizationSchedule = [];
 let amortSummary = {};
@@ -489,12 +604,10 @@ calcAmortBtn.addEventListener("click", () => {
         totalPayable: totalPayable
     };
 
-    // Render Summary UI
     resAmortEmi.textContent = `RM ${emi.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     resAmortInterest.textContent = `RM ${totalInterestPaid.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     resAmortTotal.textContent = `RM ${totalPayable.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-    // Render Table
     amortTableBody.innerHTML = "";
     amortizationSchedule.forEach((row) => {
         const tr = document.createElement("tr");

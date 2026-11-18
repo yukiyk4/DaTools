@@ -29,7 +29,7 @@
                     </div>
                     <div>
                         <h1 class="header-title">DaCalc Pro</h1>
-                        <p class="header-subtitle">Accounting, Coding & Financial calculation suite</p>
+                        <p class="header-subtitle">Accounting, Tax, Coding & Financial calculation suite</p>
                     </div>
                 </div>
 
@@ -57,13 +57,17 @@
                             <i class="fa-solid fa-book-open"></i>
                             <span>Accounting Calc</span>
                         </button>
-                        <button class="calc-nav-btn" data-target="coding-panel">
-                            <i class="fa-solid fa-code"></i>
-                            <span>Coding Calc</span>
+                        <button class="calc-nav-btn" data-target="tax-panel">
+                            <i class="fa-solid fa-receipt"></i>
+                            <span>Tax & Bill Split</span>
                         </button>
                         <button class="calc-nav-btn" data-target="financial-panel">
                             <i class="fa-solid fa-chart-line"></i>
                             <span>Financial Calc</span>
+                        </button>
+                        <button class="calc-nav-btn" data-target="coding-panel">
+                            <i class="fa-solid fa-code"></i>
+                            <span>Coding Calc</span>
                         </button>
                     </nav>
                 </aside>
@@ -75,7 +79,7 @@
                         <div class="calc-panel-header">
                             <h2 class="text-lg font-bold">Accounting & Business Calculator</h2>
                             <p class="text-xs text-slate-400">
-                                Compute markup, gross profit margins, break-even points, and depreciation.
+                                Compute markup, gross profit margins, break-even points, loan schedules, and financial statements.
                             </p>
                         </div>
 
@@ -164,8 +168,8 @@
                                 </div>
                             </div>
 
-                            <!-- Loan Amortization Schedule Tool (Accounting Tab) -->
-                            <div class="calc-card md:col-span-2 mt-6">
+                            <!-- Loan Amortization Schedule Tool -->
+                            <div class="calc-card md:col-span-2 mt-2">
                                 <h3 class="font-semibold text-sm mb-3 text-teal-600">
                                     <i class="fa-solid fa-table-list mr-1.5"></i> Loan Amortization Schedule & Interest
                                     Breakdown
@@ -176,7 +180,6 @@
                                 </p>
 
                                 <div class="space-y-4 text-xs">
-                                    <!-- Amortization Inputs -->
                                     <div
                                         class="grid grid-cols-1 sm:grid-cols-12 gap-3 bg-slate-100 dark:bg-slate-900/50 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 items-end">
                                         <div class="sm:col-span-4">
@@ -217,7 +220,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Summary Cards Output -->
                                     <div
                                         id="amort-summary-box"
                                         class="hidden grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
@@ -243,7 +245,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Schedule Table -->
                                     <div
                                         id="amort-table-box"
                                         class="hidden border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
@@ -259,14 +260,11 @@
                                                         <th class="p-2.5 text-right">Remaining Balance (RM)</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody id="amort-table-body">
-                                                    <!-- Dynamic rows populated via JS -->
-                                                </tbody>
+                                                <tbody id="amort-table-body"></tbody>
                                             </table>
                                         </div>
                                     </div>
 
-                                    <!-- Export PDF Schedule Button -->
                                     <div id="amort-actions" class="hidden flex justify-end pt-2">
                                         <button
                                             id="export-amort-pdf-btn"
@@ -277,7 +275,7 @@
                                 </div>
                             </div>
 
-                            <!-- Inside #accounting-panel in calc.html -->
+                            <!-- Journal Entries & Financial Statement PDF Generator -->
                             <div class="calc-card md:col-span-2">
                                 <h3 class="font-semibold text-sm mb-3 text-teal-600">
                                     <i class="fa-solid fa-file-invoice mr-1.5"></i> Journal Entries & Financial
@@ -289,7 +287,6 @@
                                 </p>
 
                                 <div class="space-y-4 text-xs">
-                                    <!-- Entry Input Form with Account Type Selector -->
                                     <div
                                         class="grid grid-cols-1 sm:grid-cols-12 gap-2 bg-slate-100 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-800 items-end">
                                         <div class="sm:col-span-4">
@@ -337,7 +334,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Journal Entries Table -->
                                     <div
                                         class="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
                                         <table class="w-full text-left border-collapse">
@@ -371,8 +367,7 @@
                                         </table>
                                     </div>
 
-                                    <!-- Balance Status & Export Button -->
-                                    <div class="flex flex-wra p items-center justify-between gap-3 pt-2">
+                                    <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
                                         <div
                                             id="balance-status"
                                             class="font-semibold px-3 py-1.5 rounded-lg bg-red-500/10 text-red-600 border border-red-500/20">
@@ -392,82 +387,194 @@
                         </div>
                     </div>
 
-                    <!-- 2. CODING CALCULATOR PANEL -->
-                    <div id="coding-panel" class="calc-panel hidden">
-                        <div class="calc-panel-header">
-                            <h2 class="text-lg font-bold">Coding & Developer Calculator</h2>
-                            <p class="text-xs text-slate-400">
-                                Number base conversion, pixel-to-rem calculation, and data size converter.
-                            </p>
+                    <!-- 2. TAX & BILL SPLIT PANEL (Merged from DaTax Pro) -->
+                    <div id="tax-panel" class="calc-panel hidden">
+                        <div class="calc-panel-header flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                                <h2 class="text-lg font-bold">Invoice, SST Tax & Bill Split Calculator</h2>
+                                <p class="text-xs text-slate-400">
+                                    Configure quantities, discounts, service charges, SST/tax-inclusive rates, and split bills seamlessly.
+                                </p>
+                            </div>
+                            <button
+                                id="tax-reset-btn"
+                                class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500 hover:text-white transition-colors">
+                                <i class="fa-solid fa-rotate-right mr-1"></i> Reset Fields
+                            </button>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Number Base Converter -->
-                            <div class="calc-card">
-                                <h3 class="font-semibold text-sm mb-3 text-teal-600">
-                                    <i class="fa-solid fa-binary mr-1.5"></i> Number Base Converter
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                            <!-- Left Column: Form Inputs -->
+                            <div class="calc-card lg:col-span-7 space-y-4 text-xs">
+                                <h3 class="font-semibold text-sm text-teal-600">
+                                    <i class="fa-solid fa-sliders mr-1.5"></i> Bill & Charge Parameters
                                 </h3>
-                                <div class="space-y-3 text-xs">
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block font-medium text-slate-500 mb-1">Input Value</label>
+                                        <label class="block font-medium text-slate-500 mb-1">Unit Price (RM)</label>
                                         <input
-                                            type="text"
-                                            id="code-base-input"
-                                            placeholder="e.g., 255"
-                                            class="calc-input font-mono" />
+                                            type="number"
+                                            id="tax-amount-input"
+                                            step="0.01"
+                                            placeholder="0.00"
+                                            class="calc-input" />
                                     </div>
                                     <div>
-                                        <label class="block font-medium text-slate-500 mb-1">Input Base</label>
-                                        <select id="code-base-type" class="calc-input font-semibold">
-                                            <option value="10" selected>Decimal (Base 10)</option>
-                                            <option value="16">Hexadecimal (Base 16)</option>
-                                            <option value="2">Binary (Base 2)</option>
-                                            <option value="8">Octal (Base 8)</option>
-                                        </select>
+                                        <label class="block font-medium text-slate-500 mb-1">Quantity (Qty)</label>
+                                        <input
+                                            type="number"
+                                            id="tax-qty-input"
+                                            placeholder="1"
+                                            value="1"
+                                            min="1"
+                                            class="calc-input" />
                                     </div>
-                                    <button id="calc-base-btn" class="calc-primary-btn">Convert Bases</button>
-                                    <div
-                                        id="code-base-result"
-                                        class="hidden mt-3 p-3 bg-teal-500/10 rounded-xl space-y-1 font-mono text-xs">
-                                        <p>Decimal: <span id="res-dec" class="font-bold">0</span></p>
-                                        <p>Hex: <span id="res-hex" class="font-bold">0</span></p>
-                                        <p>Binary: <span id="res-bin" class="font-bold">0</span></p>
-                                        <p>Octal: <span id="res-oct" class="font-bold">0</span></p>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Discount (%)</label>
+                                        <input
+                                            type="number"
+                                            id="tax-discount-input"
+                                            step="0.1"
+                                            placeholder="0"
+                                            value="0"
+                                            class="calc-input" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1"
+                                            >Service Charge / Gratuity (%)</label
+                                        >
+                                        <input
+                                            type="number"
+                                            id="tax-service-input"
+                                            step="0.1"
+                                            placeholder="10"
+                                            value="0"
+                                            class="calc-input" />
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Tax / SST Rate (%)</label>
+                                        <input
+                                            type="number"
+                                            id="tax-rate-input"
+                                            step="0.1"
+                                            placeholder="6"
+                                            value="6"
+                                            class="calc-input" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1"
+                                            >Shipping / Handling Fee (RM)</label
+                                        >
+                                        <input
+                                            type="number"
+                                            id="tax-shipping-input"
+                                            step="0.01"
+                                            placeholder="0.00"
+                                            value="0"
+                                            class="calc-input" />
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center pt-2 border-t border-slate-200/70 dark:border-slate-800">
+                                    <label class="flex items-center space-x-2.5 cursor-pointer select-none py-1">
+                                        <input
+                                            type="checkbox"
+                                            id="tax-inclusive-toggle"
+                                            class="w-4 h-4 accent-teal-600 rounded cursor-pointer" />
+                                        <span class="font-semibold text-slate-600 dark:text-slate-300"
+                                            >Tax-Inclusive Pricing</span
+                                        >
+                                    </label>
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1"
+                                            >Split Bill (People)</label
+                                        >
+                                        <input
+                                            type="number"
+                                            id="tax-split-input"
+                                            placeholder="1"
+                                            value="1"
+                                            min="1"
+                                            class="calc-input" />
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- PX to REM / Storage Size Converter -->
-                            <div class="calc-card">
-                                <h3 class="font-semibold text-sm mb-3 text-teal-600">
-                                    <i class="fa-solid fa-desktop mr-1.5"></i> CSS Pixels to REM Converter
-                                </h3>
-                                <div class="space-y-3 text-xs">
-                                    <div>
-                                        <label class="block font-medium text-slate-500 mb-1">Pixel Value (px)</label>
-                                        <input
-                                            type="number"
-                                            id="code-px"
-                                            placeholder="e.g., 16"
-                                            value="16"
-                                            class="calc-input" />
+                            <!-- Right Column: Live Breakdown Card -->
+                            <div class="calc-card lg:col-span-5 flex flex-col justify-between text-xs">
+                                <div>
+                                    <h3 class="font-semibold text-sm mb-4 text-teal-600">
+                                        <i class="fa-solid fa-file-invoice-dollar mr-1.5"></i> Live Invoice Breakdown
+                                    </h3>
+
+                                    <div class="space-y-3">
+                                        <div class="flex justify-between items-center text-slate-500">
+                                            <span>Base Subtotal (Price × Qty):</span>
+                                            <span
+                                                id="tax-base-subtotal"
+                                                class="font-semibold text-slate-800 dark:text-slate-200 font-mono"
+                                                >RM 0.00</span
+                                            >
+                                        </div>
+                                        <div class="flex justify-between items-center text-slate-500">
+                                            <span>Discount Saved:</span>
+                                            <span id="tax-discount-display" class="font-semibold text-emerald-600 font-mono"
+                                                >-RM 0.00</span
+                                            >
+                                        </div>
+                                        <div class="flex justify-between items-center text-slate-500">
+                                            <span>Service Charge:</span>
+                                            <span
+                                                id="tax-service-display"
+                                                class="font-semibold text-slate-800 dark:text-slate-200 font-mono"
+                                                >+RM 0.00</span
+                                            >
+                                        </div>
+                                        <div class="flex justify-between items-center text-slate-500">
+                                            <span>Tax / SST Amount:</span>
+                                            <span id="tax-amount-display" class="font-semibold text-teal-600 font-mono"
+                                                >+RM 0.00</span
+                                            >
+                                        </div>
+                                        <div class="flex justify-between items-center text-slate-500">
+                                            <span>Shipping Fee:</span>
+                                            <span
+                                                id="tax-shipping-display"
+                                                class="font-semibold text-slate-800 dark:text-slate-200 font-mono"
+                                                >+RM 0.00</span
+                                            >
+                                        </div>
                                     </div>
-                                    <div>
-                                        <label class="block font-medium text-slate-500 mb-1">Root Font Size (px)</label>
-                                        <input
-                                            type="number"
-                                            id="code-root"
-                                            placeholder="e.g., 16"
-                                            value="16"
-                                            class="calc-input" />
+                                </div>
+
+                                <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-sm">Grand Total:</span>
+                                        <span id="tax-grand-total" class="text-2xl font-extrabold text-teal-600 font-mono"
+                                            >RM 0.00</span
+                                        >
                                     </div>
-                                    <button id="calc-rem-btn" class="calc-primary-btn">Calculate REM</button>
+
+                                    <!-- Split Bill Highlight Box -->
                                     <div
-                                        id="code-rem-result"
-                                        class="hidden mt-3 p-3 bg-teal-500/10 rounded-xl space-y-1 font-medium">
-                                        <p>
-                                            REM Output: <span id="res-rem" class="font-bold text-teal-600">1rem</span>
-                                        </p>
+                                        id="tax-split-row"
+                                        class="hidden p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex justify-between items-center">
+                                        <span class="font-bold text-emerald-600">
+                                            Per Person (<span id="tax-split-count">1</span> pax):
+                                        </span>
+                                        <span
+                                            id="tax-per-person"
+                                            class="font-extrabold text-emerald-600 text-base font-mono"
+                                            >RM 0.00</span
+                                        >
                                     </div>
                                 </div>
                             </div>
@@ -575,6 +682,88 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- 4. CODING CALCULATOR PANEL -->
+                    <div id="coding-panel" class="calc-panel hidden">
+                        <div class="calc-panel-header">
+                            <h2 class="text-lg font-bold">Coding & Developer Calculator</h2>
+                            <p class="text-xs text-slate-400">
+                                Number base conversion, pixel-to-rem calculation, and data size converter.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Number Base Converter -->
+                            <div class="calc-card">
+                                <h3 class="font-semibold text-sm mb-3 text-teal-600">
+                                    <i class="fa-solid fa-binary mr-1.5"></i> Number Base Converter
+                                </h3>
+                                <div class="space-y-3 text-xs">
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Input Value</label>
+                                        <input
+                                            type="text"
+                                            id="code-base-input"
+                                            placeholder="e.g., 255"
+                                            class="calc-input font-mono" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Input Base</label>
+                                        <select id="code-base-type" class="calc-input font-semibold">
+                                            <option value="10" selected>Decimal (Base 10)</option>
+                                            <option value="16">Hexadecimal (Base 16)</option>
+                                            <option value="2">Binary (Base 2)</option>
+                                            <option value="8">Octal (Base 8)</option>
+                                        </select>
+                                    </div>
+                                    <button id="calc-base-btn" class="calc-primary-btn">Convert Bases</button>
+                                    <div
+                                        id="code-base-result"
+                                        class="hidden mt-3 p-3 bg-teal-500/10 rounded-xl space-y-1 font-mono text-xs">
+                                        <p>Decimal: <span id="res-dec" class="font-bold">0</span></p>
+                                        <p>Hex: <span id="res-hex" class="font-bold">0</span></p>
+                                        <p>Binary: <span id="res-bin" class="font-bold">0</span></p>
+                                        <p>Octal: <span id="res-oct" class="font-bold">0</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PX to REM Converter -->
+                            <div class="calc-card">
+                                <h3 class="font-semibold text-sm mb-3 text-teal-600">
+                                    <i class="fa-solid fa-desktop mr-1.5"></i> CSS Pixels to REM Converter
+                                </h3>
+                                <div class="space-y-3 text-xs">
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Pixel Value (px)</label>
+                                        <input
+                                            type="number"
+                                            id="code-px"
+                                            placeholder="e.g., 16"
+                                            value="16"
+                                            class="calc-input" />
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-slate-500 mb-1">Root Font Size (px)</label>
+                                        <input
+                                            type="number"
+                                            id="code-root"
+                                            placeholder="e.g., 16"
+                                            value="16"
+                                            class="calc-input" />
+                                    </div>
+                                    <button id="calc-rem-btn" class="calc-primary-btn">Calculate REM</button>
+                                    <div
+                                        id="code-rem-result"
+                                        class="hidden mt-3 p-3 bg-teal-500/10 rounded-xl space-y-1 font-medium">
+                                        <p>
+                                            REM Output: <span id="res-rem" class="font-bold text-teal-600">1rem</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </div>
         </main>
@@ -650,7 +839,6 @@
                                 class="w-full py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
                                 <i class="fa-solid fa-rotate-left mr-1"></i> Reset to Default Color
                             </button>
-                            <!-- Settings Modal Option Row -->
                             <div
                                 class="flex items-center justify-between py-2 border-t border-slate-100 dark:border-slate-800">
                                 <div>

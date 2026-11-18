@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en" class="h-full dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DaVN Studio - Visual Novel Engine & Editor</title>
+        <!-- Tailwind CSS CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- FontAwesome Icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <!-- Google Fonts Inter -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+            rel="stylesheet" />
+        <!-- Universal Styles & Dedicated VN Styles -->
+        <link rel="stylesheet" href="Style.css" />
+        <link rel="stylesheet" href="davn.css" />
+    </head>
+    <body class="h-full flex flex-col justify-between selection:bg-purple-500 selection:text-white overflow-hidden">
+        <!-- Header Bar -->
+        <header class="z-50 shrink-0">
+            <div class="header-container">
+                <div class="header-left">
+                    <a href="index.html" class="button2" title="Back to Homepage">
+                        <i class="fa-solid fa-house"></i>
+                    </a>
+                    <div class="header-logo-box bg-gradient-to-br from-purple-600 to-indigo-600">
+                        <i class="fa-solid fa-book-open-reader text-xl text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="header-title">DaVN Studio</h1>
+                        <p class="header-subtitle">Interactive Visual Novel Engine & JSON Script Studio</p>
+                    </div>
+                </div>
+
+                <!-- Icon-Only Header Buttons with Tooltips -->
+                <div class="flex items-center space-x-2">
+                    <button id="studio-btn" class="button2" title="Open Script Studio Editor">
+                        <i class="fa-solid fa-code"></i>
+                    </button>
+                    <button id="history-btn" class="button2" title="Dialogue History Log">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </button>
+                    <button id="save-load-btn" class="button2" title="Save / Load Game">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                    </button>
+                    <button id="settings-btn" class="button2" title="Settings">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Visual Novel Viewport -->
+        <main class="vn-viewport flex-grow relative flex flex-col justify-end overflow-hidden select-none">
+            <!-- Background Layer (z-0) -->
+            <div id="vn-bg" class="absolute inset-0 bg-slate-950 transition-all duration-700 bg-cover bg-center z-0"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/30 pointer-events-none z-10"></div>
+
+            <!-- Character Sprite Stage Layer (z-15) - Positioned behind the dialogue box -->
+            <div id="vn-sprites" class="absolute inset-x-0 bottom-0 top-12 flex justify-around items-end px-4 sm:px-16 pointer-events-none z-15"></div>
+
+            <!-- Dialogue Box & Controls UI Layer (z-25) - Higher layer so it sits on top of characters -->
+            <div class="relative z-25 max-w-5xl w-full mx-auto p-3 sm:p-6 pb-6">
+                <div class="flex items-center justify-between mb-2 px-1 text-xs text-slate-300">
+                    <div id="vn-scene-title" class="font-semibold tracking-wide text-purple-400 drop-shadow">Chapter 1: Echoes of Rain</div>
+                    <div class="flex items-center space-x-3">
+                        <button id="auto-btn" class="hover:text-purple-400 transition-colors px-2 py-1 rounded bg-slate-900/40 backdrop-blur border border-slate-700/50">Auto: OFF</button>
+                        <button id="skip-btn" class="hover:text-purple-400 transition-colors px-2 py-1 rounded bg-slate-900/40 backdrop-blur border border-slate-700/50">Skip</button>
+                    </div>
+                </div>
+
+                <div id="dialogue-box" class="vn-dialogue-card p-4 sm:p-6 rounded-2xl cursor-pointer relative group bg-slate-950/90 border border-slate-700/80 shadow-2xl backdrop-blur-md">
+                    <div id="speaker-badge" class="absolute -top-3.5 left-6 px-4 py-1 rounded-xl bg-purple-600 text-white font-bold text-xs shadow-lg tracking-wide uppercase border border-purple-400/30">
+                        System
+                    </div>
+                    <div class="min-h-[4rem] sm:min-h-[5rem] flex items-center">
+                        <p id="vn-text" class="text-sm sm:text-base text-slate-100 leading-relaxed font-medium tracking-wide">
+                            Loading DaVN Studio engine...
+                        </p>
+                    </div>
+                    <div class="absolute bottom-2 right-4 text-[10px] text-purple-300 animate-pulse flex items-center gap-1">
+                        <span>Click to continue</span> <i class="fa-solid fa-caret-down"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Choice Overlay Container (z-40) -->
+            <div id="vn-choices" class="absolute inset-0 z-40 bg-slate-950/40 hidden flex flex-col items-center justify-center p-4 space-y-3"></div>
+        </main>
+
+        <!-- Save / Load Menu Modal Overlay -->
+        <div id="save-load-modal" class="modal-overlay hidden">
+            <div class="modal-card max-w-xl w-full">
+                <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-700">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-floppy-disk text-purple-400"></i>
+                        <h3 class="font-bold text-lg">Save / Load Game</h3>
+                    </div>
+                    <button id="close-save-load" class="button2" title="Close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <p class="text-xs text-slate-400 mb-4">Select a slot to save your current progress or load a saved game.</p>
+                <div id="save-slots-container" class="space-y-3 max-h-[60vh] overflow-y-auto pr-1"></div>
+            </div>
+        </div>
+
+        <!-- History Log Modal Overlay -->
+        <div id="history-modal" class="modal-overlay hidden">
+            <div class="modal-card max-w-xl w-full max-h-[80vh] flex flex-col">
+                <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-700">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-clock-rotate-left text-purple-400"></i>
+                        <h3 class="font-bold text-lg">Dialogue History Log</h3>
+                    </div>
+                    <button id="close-history" class="button2" title="Close Log"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div id="history-content" class="flex-grow overflow-y-auto space-y-3 pr-2 text-xs sm:text-sm"></div>
+            </div>
+        </div>
+
+        <!-- Visual Node-Graph Studio Editor Modal Overlay -->
+        <div id="studio-modal" class="modal-overlay hidden">
+            <div class="w-[96vw] h-[90vh] bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 bg-slate-950 border-b border-slate-800 shrink-0">
+                    <div class="flex items-center space-x-3">
+                        <div class="p-2 rounded-lg bg-purple-600/20 text-purple-400">
+                            <i class="fa-solid fa-diagram-project"></i>
+                        </div>
+                        <div>
+                            <input
+                                type="text"
+                                id="story-title-input"
+                                value="Echoes of Rain"
+                                class="bg-transparent font-bold text-sm sm:text-base text-white border-b border-transparent hover:border-slate-600 focus:border-purple-500 outline-none px-1"
+                                title="Edit Story Title" />
+                            <p class="text-[11px] text-slate-400">
+                                Drag boxes to organize &bull; Click an output pin (<span class="text-purple-400">●</span>) then click a target box to connect
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button id="add-node-btn" class="px-3 py-1.5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors flex items-center gap-1.5">
+                            <i class="fa-solid fa-plus"></i> New Scene
+                        </button>
+                        <button id="export-json-btn" class="px-3 py-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition-colors">
+                            <i class="fa-solid fa-download mr-1"></i> Export JSON
+                        </button>
+                        <label class="px-3 py-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition-colors cursor-pointer">
+                            <i class="fa-solid fa-upload mr-1"></i> Import
+                            <input type="file" id="import-json-file" accept=".json" class="hidden" />
+                        </label>
+                        <button id="apply-script-btn" class="px-4 py-1.5 text-xs font-semibold bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors shadow-lg shadow-purple-500/20">
+                            <i class="fa-solid fa-play mr-1"></i> Play Story
+                        </button>
+                        <button id="close-studio" class="button2 ml-1" title="Close Studio">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex-grow flex overflow-hidden relative">
+                    <div id="node-canvas-viewport" class="flex-grow relative overflow-auto vn-dot-grid select-none">
+                        <div id="node-canvas-world" class="relative w-[2400px] h-[1600px]">
+                            <svg id="node-wires-svg" class="absolute inset-0 w-full h-full pointer-events-none z-0"></svg>
+                            <div id="node-cards-layer" class="relative z-10 w-full h-full"></div>
+                        </div>
+                        <div id="wiring-banner" class="hidden fixed bottom-10 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full bg-purple-600 text-white text-xs font-bold shadow-xl flex items-center gap-3">
+                            <span><i class="fa-solid fa-link mr-1"></i> Click any scene box to connect this branch...</span>
+                            <button id="cancel-wiring-btn" class="px-2 py-0.5 rounded bg-black/30 hover:bg-black/50">Cancel</button>
+                        </div>
+                    </div>
+
+                    <aside class="w-80 sm:w-96 bg-slate-950 border-l border-slate-800 p-4 overflow-y-auto shrink-0 flex flex-col justify-between text-xs">
+                        <div id="inspector-content" class="space-y-4">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                                <span class="font-bold text-sm text-purple-400">
+                                    <i class="fa-solid fa-pen-to-square mr-1"></i> Scene Properties
+                                </span>
+                                <span id="insp-node-id" class="font-mono text-[11px] text-slate-500">intro_1</span>
+                            </div>
+
+                            <div class="flex items-center justify-between bg-slate-900 p-2.5 rounded-xl border border-slate-800">
+                                <span class="font-semibold text-slate-300">Starting Scene</span>
+                                <button id="insp-set-start-btn" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-purple-600/20 text-purple-400 border border-purple-500/30 hover:bg-purple-600 hover:text-white transition-colors">
+                                    Set as Start
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-2">
+                                <div class="col-span-2">
+                                    <label class="block text-slate-400 font-semibold mb-1">Speaker Name</label>
+                                    <input type="text" id="insp-speaker" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-700 text-white outline-none focus:border-purple-500" />
+                                </div>
+                                <div>
+                                    <label class="block text-slate-400 font-semibold mb-1">Badge</label>
+                                    <input type="color" id="insp-color" class="w-full h-[34px] rounded-lg bg-slate-900 border border-slate-700 cursor-pointer p-0.5" />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-slate-400 font-semibold mb-1">Dialogue Text</label>
+                                <textarea id="insp-text" rows="3" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-700 text-white outline-none focus:border-purple-500 resize-none"></textarea>
+                            </div>
+
+                            <!-- Scene Background Selection (Presets, Custom URL, or File Upload) -->
+                            <div class="space-y-2">
+                                <label class="block text-slate-400 font-semibold mb-1">Scene Background</label>
+                                <select id="insp-bg-preset" class="w-full p-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 outline-none">
+                                    <option value="linear-gradient(135deg, #0f172a 0%, #1e293b 100%)">Preset: Midnight Slate</option>
+                                    <option value="linear-gradient(135deg, #1e1b4b 0%, #312e81 100%)">Preset: Twilight Indigo</option>
+                                    <option value="linear-gradient(135deg, #064e3b 0%, #065f46 100%)">Preset: Emerald Forest</option>
+                                    <option value="linear-gradient(135deg, #4c0519 0%, #881337 100%)">Preset: Crimson Sunset</option>
+                                    <option value="custom-url">Custom Image URL...</option>
+                                    <option value="custom-file">Upload Local Image...</option>
+                                </select>
+
+                                <input type="url" id="insp-bg-custom-url" placeholder="https://example.com/background.jpg" class="hidden w-full p-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs outline-none focus:border-purple-500" />
+
+                                <div id="insp-bg-file-wrapper" class="hidden flex gap-1.5 items-center">
+                                    <input type="text" id="insp-bg-img-preview-text" readonly placeholder="No file chosen" class="w-full p-1.5 rounded-lg bg-slate-950 border border-slate-700 text-slate-400 text-xs truncate" />
+                                    <label class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold cursor-pointer shrink-0 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-upload"></i> Browse
+                                        <input type="file" id="insp-bg-custom-file" accept="image/*" class="hidden" />
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Character Sprite Section -->
+                            <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 space-y-2">
+                                <label class="flex items-center justify-between font-semibold text-slate-300 cursor-pointer">
+                                    <span>Character Sprite</span>
+                                    <input type="checkbox" id="insp-sprite-toggle" class="accent-purple-500 w-4 h-4" />
+                                </label>
+                                <div id="insp-sprite-fields" class="space-y-2 pt-1 hidden">
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <input type="text" id="insp-sprite-name" placeholder="Name (e.g. Aoi)" class="p-1.5 rounded bg-slate-950 border border-slate-700 text-white text-xs" />
+                                        <input type="text" id="insp-sprite-exp" placeholder="Expression" class="p-1.5 rounded bg-slate-950 border border-slate-700 text-white text-xs" />
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] text-slate-400 mb-1">Sprite Image (URL or Upload)</label>
+                                        <div class="flex gap-1.5">
+                                            <input type="url" id="insp-sprite-img" placeholder="https://... or upload" class="w-full p-1.5 rounded bg-slate-950 border border-slate-700 text-white text-xs" />
+                                            <label class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold cursor-pointer shrink-0 flex items-center">
+                                                <i class="fa-solid fa-upload"></i>
+                                                <input type="file" id="insp-sprite-file" accept="image/*" class="hidden" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2 pt-2 border-t border-slate-800">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-bold text-slate-300">Player Responses / Branches</span>
+                                    <button id="insp-add-choice-btn" class="px-2 py-1 rounded bg-purple-600/20 text-purple-400 hover:bg-purple-600 hover:text-white font-semibold transition-colors">+ Add Choice</button>
+                                </div>
+                                <p class="text-[11px] text-slate-500">If no choices exist, the scene follows its single <b>Next Scene</b> pin.</p>
+                                <div id="insp-choices-list" class="space-y-2"></div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 mt-4 border-t border-slate-800">
+                            <button id="insp-delete-node-btn" class="w-full py-2 rounded-xl bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white font-semibold transition-colors">
+                                <i class="fa-solid fa-trash-can mr-1"></i> Delete This Scene Box
+                            </button>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal Overlay -->
+        <div id="settings-modal" class="modal-overlay hidden">
+            <div class="modal-card">
+                <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-700">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-gear text-purple-400"></i>
+                        <h3 class="font-bold text-lg">Hub Settings</h3>
+                    </div>
+                    <button id="close-modal" class="button2" title="Close Settings"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="space-y-4 text-sm">
+                    <div class="py-2 space-y-3">
+                        <div>
+                            <p class="font-semibold">Custom Background / Wallpaper</p>
+                            <p class="text-xs text-slate-500">Use a custom image link or upload a picture.</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Image URL</label>
+                            <div class="flex gap-2">
+                                <input type="url" id="bg-url-input" placeholder="https://example.com/image.jpg" class="tax-input text-xs py-1.5" />
+                                <button id="apply-url-btn" class="px-3 py-1.5 text-xs font-semibold bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">Apply</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Upload Local Image</label>
+                            <input type="file" id="bg-file-input" accept="image/*" class="text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-500/10 file:text-purple-400 hover:file:bg-purple-500/20 cursor-pointer" />
+                        </div>
+                    </div>
+                    <div class="py-2 border-t border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <p class="font-semibold">Card Transparency</p>
+                            <span id="transparency-value" class="text-xs font-bold text-purple-400">65%</span>
+                        </div>
+                        <input type="range" id="transparency-slider" min="0.1" max="1" step="0.05" value="0.65" class="w-full accent-purple-500 cursor-pointer" />
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-t border-slate-800">
+                        <div>
+                            <p class="font-semibold">Local Storage Data</p>
+                            <p class="text-xs text-slate-500">Clear saved game progress & cache.</p>
+                        </div>
+                        <button id="clear-cache-btn" class="px-3 py-1.5 text-xs font-semibold bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition-colors">Clear Cache</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>DaVN Studio &bull; Permanent Dark Mode Engine</p>
+        </footer>
+
+        <script src="app.js"></script>
+        <script src="davn.js"></script>
+    </body>
+</html>
